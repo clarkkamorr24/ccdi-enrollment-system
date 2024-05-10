@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React from "react";
+import logo from "../../public/icon.png";
 
 export default function Logo() {
-  return <Image alt="logo" src="/logo.svg" width={300} height={80} />;
+  return <Image alt="logo" src={logo} height={80} width={100} />;
 }
