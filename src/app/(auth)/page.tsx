@@ -5,8 +5,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <Logo />
-      <p className="text-ccd-blue text-5xl mt-10 text-center">
+      <p className="text-ccd-blue text-4xl mt-10 text-center">
         Welcome{" "}
         <span className="text-ccdi-red font-semibold">{`CCDIAN's`}</span>
       </p>
@@ -15,7 +14,7 @@ export default function Home() {
           <Button className="w-full">Create Account</Button>
         </Link>
         <Link href="/login" className="w-full">
-          <Button className="w-full">Login</Button>
+          <Button className="w-full">Sign In</Button>
         </Link>
       </div>
     </>
