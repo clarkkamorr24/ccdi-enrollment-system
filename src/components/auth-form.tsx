@@ -8,7 +8,7 @@ type AuthFormProps = {
 
 export default function AuthForm({ type }: AuthFormProps) {
   return (
-    <form>
+    <form action="/dashboard">
       <div className="space-y-1 mt-5">
         <Label htmlFor="email">Username:</Label>
         <Input type="email" id="email" name="email" />
@@ -26,7 +26,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         </div>
       )}
 
-      <Button className="w-full mt-10">
+      <Button className="w-full mt-5">
         {type === "register" ? "Register" : "Login"}
       </Button>
     </form>

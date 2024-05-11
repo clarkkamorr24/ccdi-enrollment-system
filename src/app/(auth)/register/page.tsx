@@ -1,5 +1,6 @@
 import AuthForm from "@/components/auth-form";
 import H1 from "@/components/h1";
+import Link from "next/link";
 import React from "react";
 
 export default function Page() {
@@ -9,6 +10,12 @@ export default function Page() {
         Register form
       </H1>
       <AuthForm type="register" />
+      <p className="mt-4 text-center">
+        Already have an account?{" "}
+        <Link href="/login" className="font-semibold text-ccdi-blue underline">
+          Login
+        </Link>
+      </p>
     </main>
   );
 }
