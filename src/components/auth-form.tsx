@@ -10,19 +10,19 @@ export default function AuthForm({ type }: AuthFormProps) {
   return (
     <form action="/dashboard">
       <div className="space-y-1 mt-5">
-        <Label htmlFor="email">Username:</Label>
-        <Input type="email" id="email" name="email" />
+        <Label htmlFor="username">Username:</Label>
+        <Input id="username" name="username" />
       </div>
 
       <div className="space-y-1 mt-2">
         <Label htmlFor="password">Password:</Label>
-        <Input type="email" id="email" name="email" />
+        <Input id="password" name="password" />
       </div>
 
       {type === "register" && (
         <div className="space-y-1 mt-2">
-          <Label htmlFor="password">Confirm Password:</Label>
-          <Input type="email" id="email" name="email" />
+          <Label htmlFor="c_password">Confirm Password:</Label>
+          <Input id="c_password" name="c_password" />
         </div>
       )}
 

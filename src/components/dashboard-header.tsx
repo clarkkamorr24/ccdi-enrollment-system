@@ -8,7 +8,7 @@ export default function DashboardHeader() {
       <div className="flex justify-between items-center max-w-[1280px] mx-auto w-full px-4 xl:px-0">
         <LogoWhite />
         <div className="flex gap-x-4">
-          <p>Welcome user</p>
+          <p>Welcome Admin</p>
           <Link href="/">
             <p>Logout</p>
           </Link>
