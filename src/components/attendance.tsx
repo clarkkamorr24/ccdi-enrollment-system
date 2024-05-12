@@ -11,7 +11,7 @@ import {
 import { Button } from "./ui/button";
 import {
   addAttendance,
-  getWeeklyAttendance,
+  geAttendanceByStudentId,
   updateAttendance,
 } from "@/actions/action";
 import { getTodayDate } from "@/utils/getTodayDate";
@@ -30,20 +30,24 @@ type AttendanceProps = {
 export default function Attendance({ students }: AttendanceProps) {
   const handleMarkAs = async (studentId: string, type: string) => {
     //get attendance by student id
-    const attendance = await getWeeklyAttendance(studentId);
+    const attendance = await geAttendanceByStudentId(studentId);
 
     //get the today date
     const todayDate = getTodayDate();
 
     //check if the attendance already exists
     const filteredAttendance = attendance.some(
-      (attendance) => moment(attendance.createdAt).format("l") === todayDate
+      (attendance) =>
+        moment(attendance.createdAt).format("l") ===
+        moment(todayDate).format("l")
     );
 
     //update attendance
     if (filteredAttendance) {
       const filterId = attendance.find(
-        (attendance) => moment(attendance.createdAt).format("l") === todayDate
+        (attendance) =>
+          moment(attendance.createdAt).format("l") ===
+          moment(todayDate).format("l")
       );
 
       await updateAttendance(filterId?.id, type === "absent" ? false : true);
@@ -51,7 +55,10 @@ export default function Attendance({ students }: AttendanceProps) {
     }
 
     //proceed to add attendance
-    const error = await addAttendance(studentId);
+    const error = await addAttendance(
+      studentId,
+      type === "absent" ? false : true
+    );
     if (error) {
       console.log("error", error);
       return;

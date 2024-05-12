@@ -1,17 +1,26 @@
 import moment from "moment";
 
+let currentDate = moment();
+
+export function startOfTheWeek() {
+  const startOfWeek = currentDate.clone().startOf("isoWeek");
+
+  return startOfWeek;
+}
+
+export function endOfTheWeek() {
+  const endOfWeek = currentDate.clone().endOf("isoWeek");
+
+  return endOfWeek;
+}
+
 export function useGetRangeOfTheWeek() {
-  const currentDate = moment();
-
-  // Get the start of the current week (Monday)
-  const startOfWeek = currentDate.clone().startOf("week").add(1, "day");
-
-  // Get the end of the current week (Sunday)
-  const endOfWeek = currentDate.clone().endOf("week").add(1, "day");
+  const startOfWeek = startOfTheWeek();
+  const endOfWeek = endOfTheWeek();
 
   // Format the dates
-  const startOfWeekFormatted = startOfWeek.format("MMMM D");
-  const endOfWeekFormatted = endOfWeek.format("MMMM D");
+  const startOfWeekFormatted = startOfWeek.format("MMMM D, YYYY");
+  const endOfWeekFormatted = endOfWeek.format("MMMM D, YYYY");
 
   return {
     startOfWeekFormatted,

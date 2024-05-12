@@ -3,11 +3,11 @@ import H1 from "@/components/h1";
 import Teachers from "@/components/teachers";
 import WeeklyRecord from "@/components/weekly-record";
 import React from "react";
-import prisma from "@/lib/db";
 import { useGetRangeOfTheWeek } from "@/hooks/useGetRangeOfTheWeek";
+import { getStudents } from "@/actions/action";
 
 export default async function Page({ params }: { params: { route: string } }) {
-  const students = await prisma.student.findMany();
+  const students = await getStudents();
   const { endOfWeekFormatted, startOfWeekFormatted } = useGetRangeOfTheWeek();
 
   return (

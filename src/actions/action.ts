@@ -1,12 +1,17 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { getTodayDate } from "@/utils/getTodayDate";
 
-export async function addAttendance(studentId: any) {
+export async function addAttendance(studentId: any, isPresent: any) {
+  const todayDate = getTodayDate();
+
   try {
     await prisma.attendance.create({
       data: {
-        present: true,
+        present: isPresent,
+        createdAt: todayDate,
+        updatedAt: todayDate,
         student: {
           connect: {
             id: studentId,
@@ -22,18 +27,18 @@ export async function addAttendance(studentId: any) {
   }
 }
 
-export async function getWeeklyAttendance(studentId: any) {
+export async function getStudents() {
+  const students = await prisma.student.findMany();
+
+  return students;
+}
+
+export async function geAttendanceByStudentId(studentId: any) {
   const attendance = await prisma.attendance.findMany({
     where: {
       studentId: studentId,
     },
   });
-  console.log(attendance);
-  return attendance;
-}
-
-export async function getStudentAttendanceWeeklyRecord() {
-  const attendance = await prisma.attendance.findMany({});
 
   return attendance;
 }
@@ -54,4 +59,14 @@ export async function updateAttendance(attendanceId: any, isPresent: any) {
       message: "Could not update attendance",
     };
   }
+}
+
+export async function getAttendanceRecord() {
+  const studentAttendance = await prisma.student.findMany({
+    include: {
+      attendance: true,
+    },
+  });
+
+  return studentAttendance;
 }
