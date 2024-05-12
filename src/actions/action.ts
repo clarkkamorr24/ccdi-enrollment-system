@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/db";
 import { getTodayDate } from "@/utils/getTodayDate";
+import { revalidatePath } from "next/cache";
 
 export async function addAttendance(studentId: any, isPresent: any) {
   const todayDate = getTodayDate();
@@ -25,6 +26,8 @@ export async function addAttendance(studentId: any, isPresent: any) {
       message: "Could not add attendance",
     };
   }
+
+  revalidatePath("/dashboard/attendance");
 }
 
 export async function getStudents() {
@@ -38,18 +41,28 @@ export async function geAttendanceByStudentId(studentId: any) {
     where: {
       studentId: studentId,
     },
+    include: {
+      student: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   return attendance;
 }
 
 export async function updateAttendance(attendanceId: any, isPresent: any) {
+  const todayDate = getTodayDate();
+
   try {
     await prisma.attendance.update({
       where: {
         id: attendanceId,
       },
       data: {
+        updatedAt: todayDate,
         present: isPresent,
       },
     });
@@ -59,6 +72,8 @@ export async function updateAttendance(attendanceId: any, isPresent: any) {
       message: "Could not update attendance",
     };
   }
+
+  revalidatePath("/dashboard/attendance");
 }
 
 export async function getAttendanceRecord() {

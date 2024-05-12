@@ -14,10 +14,9 @@ export function endOfTheWeek() {
   return endOfWeek;
 }
 
-export function useGetRangeOfTheWeek() {
+export function getRangeOfTheWeek() {
   const startOfWeek = startOfTheWeek();
   const endOfWeek = endOfTheWeek();
-
   // Format the dates
   const startOfWeekFormatted = startOfWeek.format("MMMM D, YYYY");
   const endOfWeekFormatted = endOfWeek.format("MMMM D, YYYY");
@@ -26,4 +25,10 @@ export function useGetRangeOfTheWeek() {
     startOfWeekFormatted,
     endOfWeekFormatted,
   };
+}
+
+export function getFixedDate(date: Date) {
+  const fixedDate = moment(date).subtract(1, "day").add(16, "hour");
+
+  return fixedDate;
 }

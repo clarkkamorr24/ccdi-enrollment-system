@@ -3,12 +3,12 @@ import H1 from "@/components/h1";
 import Teachers from "@/components/teachers";
 import WeeklyRecord from "@/components/weekly-record";
 import React from "react";
-import { useGetRangeOfTheWeek } from "@/hooks/useGetRangeOfTheWeek";
 import { getStudents } from "@/actions/action";
+import { getRangeOfTheWeek } from "@/utils/momentUtils";
 
 export default async function Page({ params }: { params: { route: string } }) {
   const students = await getStudents();
-  const { endOfWeekFormatted, startOfWeekFormatted } = useGetRangeOfTheWeek();
+  const { endOfWeekFormatted, startOfWeekFormatted } = getRangeOfTheWeek();
 
   return (
     <div className=" col-span-full col-start-2 p-4">
