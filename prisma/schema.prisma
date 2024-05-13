@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id             String    @id @default(cuid())
-  email          String    @unique
+  username       String    @unique
   students       Student[]
   hashedPassword String
   createdAt      DateTime  @default(now())

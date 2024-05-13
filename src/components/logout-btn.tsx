@@ -15,7 +15,7 @@ export default function LogoutBtn() {
           await logout();
         })
       }
-      className="h-8 bg-ccdi-red/50"
+      className="h-8 bg-ccdi-red/50 hover:bg-ccdi-red/40"
     >
       {isPending ? (
         <>

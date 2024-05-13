@@ -14,7 +14,7 @@ export default async function DashboardHeader() {
         <Link href="/dashboard">
           <LogoWhite />
         </Link>
-        <div className="flex gap-x-1 items-center">
+        <div className="flex gap-x-1 items-center capitalize">
           Hello, {email}
           <span className="animate-wave mr-4">👋</span>
           <LogoutBtn />

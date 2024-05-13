@@ -17,11 +17,7 @@ export async function logIn(prevState: unknown, formData: unknown) {
   }
 
   try {
-    await signIn("credentials", {
-      redirectTo: "/dashboard",
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    });
+    await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
       const { type } = error;

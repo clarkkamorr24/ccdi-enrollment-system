@@ -16,9 +16,9 @@ const config = {
           return null;
         }
         //extract values
-        const { email, password } = validatedFormData.data;
+        const { username, password } = validatedFormData.data;
 
-        const user = await getUserByUsername(email);
+        const user = await getUserByUsername(username);
 
         if (!user) {
           console.log("user not found");

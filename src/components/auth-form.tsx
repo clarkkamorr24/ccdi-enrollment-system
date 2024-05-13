@@ -23,8 +23,14 @@ export default function AuthForm({ type }: AuthFormProps) {
       )}
 
       <div className="space-y-1 mt-5">
-        <Label htmlFor="email">Username:</Label>
-        <Input id="email" type="text" name="email" required maxLength={100} />
+        <Label htmlFor="username">Username:</Label>
+        <Input
+          id="username"
+          type="text"
+          name="username"
+          required
+          maxLength={100}
+        />
       </div>
 
       <div className="space-y-1 mt-2">

@@ -1,19 +1,22 @@
 import { NextAuthConfig } from "next-auth";
 
 export const nextAuthEdgeConfig = {
+  providers: [],
   pages: {
     signIn: "/login",
   },
   callbacks: {
     authorized: ({ auth, request }) => {
+      console.log("auth", auth);
+      console.log("request", request.nextUrl.pathname);
       return true;
     },
 
-    jwt: async ({ token, user }) => {
+    jwt: ({ token, user }) => {
       if (user) {
         // on signin
         token.userId = user.id;
-        token.email = user.email;
+        token.email = user.username;
       }
       return token;
     },
@@ -24,5 +27,4 @@ export const nextAuthEdgeConfig = {
       return session;
     },
   },
-  providers: [],
 } satisfies NextAuthConfig;
