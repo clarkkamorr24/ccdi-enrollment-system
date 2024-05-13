@@ -55,8 +55,8 @@ export default function Teachers() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[400px]">Teachers ID</TableHead>
-          <TableHead>Name</TableHead>
+          <TableHead className="w-[400px] font-bold">Teachers ID</TableHead>
+          <TableHead className="font-bold">Name</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

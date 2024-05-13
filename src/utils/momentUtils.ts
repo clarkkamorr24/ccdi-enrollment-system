@@ -32,3 +32,9 @@ export function getFixedDate(date: Date) {
 
   return fixedDate;
 }
+
+export function getTodayDate() {
+  const todaysDate = moment().format("dddd, MMMM Do YYYY");
+
+  return todaysDate;
+}

@@ -11,6 +11,12 @@ import {
 import { useAttendanceContext } from "@/hooks/useAttendance";
 import AttendanceButton from "./attendance-button";
 import { useTransition } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 type Student = {
   id: string;
@@ -30,9 +36,9 @@ export default function Attendance({ students }: AttendanceProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[300px]">Student ID</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead className="text-center">Marked as</TableHead>
+          <TableHead className="w-[200px] font-bold">Student ID</TableHead>
+          <TableHead className="font-bold">Name</TableHead>
+          <TableHead className="font-bold">Marked as</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -40,27 +46,46 @@ export default function Attendance({ students }: AttendanceProps) {
           <TableRow key={student.id}>
             <TableCell className="font-medium">{student.idNumber}</TableCell>
             <TableCell>{student.name}</TableCell>
-            <TableCell className="space-x-2 text-center">
-              <AttendanceButton
-                type="present"
-                onClick={async () =>
-                  startTransition(async () => {
-                    await handleMarkAs(student.id, "present");
-                  })
-                }
-              >
-                Present
-              </AttendanceButton>
-              <AttendanceButton
-                type="absent"
-                onClick={async () =>
-                  startTransition(async () => {
-                    await handleMarkAs(student.id, "absent");
-                  })
-                }
-              >
-                Absent
-              </AttendanceButton>
+            <TableCell className="flex gap-x-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <AttendanceButton
+                      type="present"
+                      onClick={async () =>
+                        startTransition(async () => {
+                          await handleMarkAs(student.id, "present");
+                        })
+                      }
+                    >
+                      <span className="ml-2">🙋‍♂️</span>
+                    </AttendanceButton>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-black/70">
+                    <p>Present</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <AttendanceButton
+                      type="absent"
+                      onClick={async () =>
+                        startTransition(async () => {
+                          await handleMarkAs(student.id, "absent");
+                        })
+                      }
+                    >
+                      <span className="ml-2">🤦‍♂️</span>
+                    </AttendanceButton>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-black/70">
+                    <p>Absent</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </TableCell>
           </TableRow>
         ))}

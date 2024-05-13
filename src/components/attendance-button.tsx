@@ -18,8 +18,14 @@ export default function AttendanceButton({
     <Button
       disabled={disabled}
       size="sm"
-      className={cn(type === "present" ? "bg-ccdi-blue/70" : "bg-ccdi-red/70")}
+      className={cn(
+        "text-sm p-3",
+        type === "present"
+          ? "bg-ccdi-blue/70"
+          : "bg-ccdi-red/70 hover:bg-ccdi-red/90"
+      )}
       onClick={onClick}
+      asChild
     >
       {children}
     </Button>

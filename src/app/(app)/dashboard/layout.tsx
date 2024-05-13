@@ -11,11 +11,10 @@ export default async function DashboardLayout({
 }: DashboardLayoutProps) {
   const records = await getRecords();
 
-  console.log(records);
   return (
     <main className="grid grid-cols-3 grid-rows-1 h-[700px]">
       <div className="col-span-1 col-start-1 border-r border-gray-500/10">
-        <div className="w-full h-full">
+        <div className="w-full h-full p-2">
           <SideItemsList />
         </div>
       </div>

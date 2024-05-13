@@ -27,7 +27,7 @@ export default function LogoutBtn() {
       ) : (
         <>
           {"Log out"}
-          <AiOutlineLogout className="ml-2" />
+          <AiOutlineLogout className="ml-2" strokeWidth={50} />
         </>
       )}
     </Button>

@@ -6,14 +6,6 @@ export const nextAuthEdgeConfig = {
   },
   callbacks: {
     authorized: ({ auth, request }) => {
-      console.log("auth", auth);
-      const isOnDashboard = request.nextUrl.pathname.includes("/dashboard");
-      console.log("isOnDashboard", isOnDashboard);
-
-      // if (isOnDashboard) {
-      //   return false;
-      // }
-
       return true;
     },
 
@@ -23,7 +15,6 @@ export const nextAuthEdgeConfig = {
         token.userId = user.id;
         token.email = user.email;
       }
-      console.log("return token", token);
       return token;
     },
 

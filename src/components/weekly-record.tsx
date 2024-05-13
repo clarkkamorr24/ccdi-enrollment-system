@@ -18,9 +18,11 @@ export default function WeeklyRecord() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Name</TableHead>
+          <TableHead className="w-[100px] font-bold">Name</TableHead>
           {weekdays.map((weekday) => (
-            <TableHead key={weekday}>{weekday}</TableHead>
+            <TableHead key={weekday} className="font-bold">
+              {weekday}
+            </TableHead>
           ))}
         </TableRow>
       </TableHeader>
