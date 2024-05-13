@@ -28,23 +28,25 @@ type AttendanceProps = {
   students: Student[];
 };
 
-export default function Attendance({ students }: AttendanceProps) {
+export default function AttendanceTable({ students }: AttendanceProps) {
   const { handleMarkAs } = useAttendanceContext();
   const [isPending, startTransition] = useTransition();
 
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[200px] font-bold">Student ID</TableHead>
-          <TableHead className="font-bold">Name</TableHead>
-          <TableHead className="font-bold">Marked as</TableHead>
+        <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
+          <TableHead className="w-[200px] font-bold text-white">
+            Student ID
+          </TableHead>
+          <TableHead className="w-[300px] font-bold text-white">Name</TableHead>
+          <TableHead className="font-bold text-white">Marked as</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="text-xs">
         {students.map((student) => (
           <TableRow key={student.id}>
-            <TableCell className="font-medium">{student.idNumber}</TableCell>
+            <TableCell>{student.idNumber}</TableCell>
             <TableCell>{student.name}</TableCell>
             <TableCell className="flex gap-x-2">
               <TooltipProvider>

@@ -12,9 +12,9 @@ export default async function DashboardLayout({
   const records = await getRecords();
 
   return (
-    <main className="grid grid-cols-3 grid-rows-1 h-[700px]">
-      <div className="col-span-1 col-start-1 border-r border-gray-500/10">
-        <div className="w-full h-full p-2">
+    <main className="grid md:grid-cols-3 md:grid-rows-1 md:h-[700px]">
+      <div className="md:col-span-1 md:col-start-1 border-r border-gray-500/10">
+        <div className="md:w-full md:h-full p-2">
           <SideItemsList />
         </div>
       </div>

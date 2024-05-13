@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Page() {
   return (
-    <div className=" col-span-full col-start-2 p-4">
+    <div className=" md:col-span-full md:col-start-2 p-4">
       <main className="flex flex-col justify-center items-center mt-20">
         <Logo />
         <p className="mt-5 font-semibold text-5xl text-center text-ccdi-blue">

@@ -1,4 +1,5 @@
 import { getAttendanceRecord } from "@/actions/action";
+import { checkAuth } from "@/lib/server-utils";
 import { TRecord } from "@/types/record";
 import {
   endOfTheWeek,
@@ -7,7 +8,8 @@ import {
 } from "@/utils/momentUtils";
 
 export async function getRecords() {
-  const attendances = await getAttendanceRecord();
+  const session = await checkAuth();
+  const attendances = await getAttendanceRecord(session.user.id);
   const startOfWeek = startOfTheWeek();
   const endOfWeek = endOfTheWeek();
 

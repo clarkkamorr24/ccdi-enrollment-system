@@ -10,7 +10,7 @@ export default function Page() {
         Login form
       </H1>
       <AuthForm type="login" />
-      <p className="mt-4 text-center">
+      <p className="mt-4 text-center text-sm">
         No account yet?{" "}
         <Link
           href="/register"

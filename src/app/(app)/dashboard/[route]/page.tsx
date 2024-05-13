@@ -1,30 +1,30 @@
-import Attendance from "@/components/attendance";
+import AttendanceTable from "@/components/attendance";
 import H1 from "@/components/h1";
 import Teachers from "@/components/teachers";
-import WeeklyRecord from "@/components/weekly-record";
+import WeeklyRecordTable from "@/components/weekly-record";
 import React from "react";
 import { getStudents } from "@/actions/action";
-import { getRangeOfTheWeek } from "@/utils/momentUtils";
+import { checkAuth } from "@/lib/server-utils";
+import NoResultFound from "@/components/no-result-found";
 
 export default async function Page({ params }: { params: { route: string } }) {
-  const students = await getStudents();
-  const { endOfWeekFormatted, startOfWeekFormatted } = getRangeOfTheWeek();
+  const session = await checkAuth();
+  const students = await getStudents(session.user.id);
 
+  console.log(!students.length);
   return (
-    <div className=" col-span-full col-start-2 p-4">
+    <div className=" md:col-span-full md:col-start-2 p-4">
       {params.route === "attendance" && (
         <>
           <Title> List of Students</Title>
-          <Attendance students={students} />
+          {!students.length && <NoResultFound />}
+          {students.length > 0 && <AttendanceTable students={students} />}
         </>
       )}
       {params.route === "attendance-weekly-record" && (
         <>
           <Title> Attendance Weekly Record</Title>
-          <p className="text-center mb-5 font-semibold text-ccdi-blue">
-            For {startOfWeekFormatted} to {endOfWeekFormatted}
-          </p>
-          <WeeklyRecord />
+          <WeeklyRecordTable />
         </>
       )}
       {params.route === "list-of-teachers" && (

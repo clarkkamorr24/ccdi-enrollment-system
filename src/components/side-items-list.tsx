@@ -14,12 +14,13 @@ export default function SideItemsList() {
         <Link href={`${sideITem.href}`} key={sideITem.id}>
           <li
             className={cn(
-              "flex py-4 justify-center mb-1 items-center w-full border-b border-ccdi-blue/10 transition hover:bg-ccdi-blue/80 hover:text-white rounded-md",
+              "flex py-3 text-sm justify-center mb-1 items-center w-full transition hover:bg-ccdi-blue/80 hover:text-white rounded-md",
               pathname === sideITem.href ? "bg-ccdi-blue/80 text-white" : ""
             )}
           >
             {sideITem.name}
           </li>
+          <div className="h-[1px] bg-ccdi-blue/10 w-full" />
         </Link>
       ))}
     </ul>

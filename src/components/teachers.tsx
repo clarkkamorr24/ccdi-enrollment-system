@@ -54,12 +54,14 @@ export default function Teachers() {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[400px] font-bold">Teachers ID</TableHead>
-          <TableHead className="font-bold">Name</TableHead>
+        <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
+          <TableHead className="w-[400px] font-bold text-white">
+            Teachers ID
+          </TableHead>
+          <TableHead className="font-bold text-white">Name</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="text-xs">
         {teachers.map((teacher) => (
           <TableRow key={teacher.teacherId}>
             <TableCell className="font-medium">{teacher.teacherId}</TableCell>

@@ -6,7 +6,11 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
+import { authSchema } from "@/lib/validation";
+import bcrypt from "bcryptjs";
+import { Prisma } from "@prisma/client";
 
+//login
 export async function logIn(prevState: unknown, formData: unknown) {
   await sleep(1000);
   //check if formData is a FormData type
@@ -37,6 +41,56 @@ export async function logIn(prevState: unknown, formData: unknown) {
   }
 }
 
+//signup
+export async function register(prevState: unknown, formData: unknown) {
+  await sleep(1000);
+  //check if formData is a FormData type
+  if (!(formData instanceof FormData)) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  //convert formData to plain object
+  const formDataObject = Object.fromEntries(formData.entries());
+
+  //validation
+  const validatedFormData = authSchema.safeParse(formDataObject);
+  if (!validatedFormData.success) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  const { username, password } = validatedFormData.data;
+  console.log("username", username);
+  console.log("password", password);
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await prisma.user.create({
+      data: {
+        username,
+        hashedPassword,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {
+          message: "Username already exists.",
+        };
+      }
+    }
+    return {
+      message: "Could not sign up.",
+    };
+  }
+
+  await signIn("credentials", formData);
+}
+
+//logout
 export async function logout() {
   await sleep(1000);
 
@@ -55,8 +109,12 @@ export async function getStudent(id: any) {
   return student;
 }
 
-export async function getStudents() {
-  const students = await prisma.student.findMany();
+export async function getStudents(userId: any) {
+  const students = await prisma.student.findMany({
+    where: {
+      userId: userId,
+    },
+  });
 
   return students;
 }
@@ -120,8 +178,11 @@ export async function geAttendanceByStudentId(studentId: any) {
   return attendance;
 }
 
-export async function getAttendanceRecord() {
+export async function getAttendanceRecord(userId: any) {
   const studentAttendance = await prisma.student.findMany({
+    where: {
+      userId: userId,
+    },
     include: {
       attendance: true,
     },

@@ -1,8 +1,9 @@
 "use client";
+
 import { useFormState } from "react-dom";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { logIn } from "@/actions/action";
+import { logIn, register } from "@/actions/action";
 import AuthFormBtn from "./auth-from-btn";
 
 type AuthFormProps = {
@@ -10,15 +11,22 @@ type AuthFormProps = {
 };
 
 export default function AuthForm({ type }: AuthFormProps) {
-  // const [signUpError, dispatchSignUp] = useFormState(signUp, undefined);
+  const [registerError, dispatchRegister] = useFormState(register, undefined);
   const [logInError, dispatchLogIn] = useFormState(logIn, undefined);
 
   return (
-    <form action={dispatchLogIn}>
+    <form action={type === "register" ? dispatchRegister : dispatchLogIn}>
       {logInError && (
         <p className="text-sm text-red-500 font-semibold text-center">
           {" "}
           {logInError.message}
+        </p>
+      )}
+
+      {registerError && (
+        <p className="text-sm text-red-500 font-semibold text-center">
+          {" "}
+          {registerError.message}
         </p>
       )}
 
