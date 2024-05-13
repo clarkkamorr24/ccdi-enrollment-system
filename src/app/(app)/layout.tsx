@@ -1,8 +1,17 @@
 import DashboardHeader from "@/components/dashboard-header";
 import { Toaster } from "@/components/ui/sonner";
+import { checkAuth } from "@/lib/server-utils";
 import React from "react";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await checkAuth();
+
+  console.log("AppLayoutsession", session);
+
   return (
     <>
       <div className="bg-white/90 min-h-screen">

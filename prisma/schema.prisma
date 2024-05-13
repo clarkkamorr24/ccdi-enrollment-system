@@ -10,8 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  students       Student[]
+  hashedPassword String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
 model Student {
   id         String       @id @default(cuid())
+  user       User         @relation(fields: [userId], references: [id])
+  userId     String
   name       String
   idNumber   String       @unique
   attendance Attendance[]

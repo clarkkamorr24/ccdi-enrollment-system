@@ -3,6 +3,7 @@
 import {
   addAttendance,
   geAttendanceByStudentId,
+  getStudent,
   updateAttendance,
 } from "@/actions/action";
 import { TRecord } from "@/types/record";
@@ -64,6 +65,9 @@ export default function AttendanceContextProvider({
     //get attendance by student id
     const attendance = await geAttendanceByStudentId(studentId);
 
+    //get the student by id
+    const student = await getStudent(studentId);
+
     //get the today date
     const todayDate = getTodayDate();
 
@@ -85,8 +89,8 @@ export default function AttendanceContextProvider({
       setOptimisticRecords({ action: "update", payload: studentId });
 
       type === "absent"
-        ? toast.warning(`${filterData?.student.name} marked as absent`)
-        : toast.success(`${filterData?.student.name} marked as present`);
+        ? toast.warning(`${student?.name} marked as absent`)
+        : toast.success(`${student?.name} marked as present`);
 
       await updateAttendance(filterData?.id, type === "absent" ? false : true);
       return;
@@ -94,7 +98,7 @@ export default function AttendanceContextProvider({
 
     //proceed to add attendance
     setOptimisticRecords({ action: "add", payload: studentId });
-    toast.success(`${filterData?.student.name} marked as present`);
+    toast.success(`${student?.name} marked as present`);
     const error = await addAttendance(
       studentId,
       type === "absent" ? false : true

@@ -1,67 +1,66 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-const students = [
-  {
-    name: "John Doe",
-    idNumber: "123456789",
-    attendance: {
-      create: [
-        {
-          date: new Date("2024-05-10"),
-          present: true,
-        },
-        {
-          date: new Date("2023-05-11"),
-          present: false,
-        },
-      ],
-    },
+const userData: Prisma.UserCreateInput = {
+  email: "admin",
+  hashedPassword: "",
+  students: {
+    create: [
+      {
+        name: "John Doe",
+        idNumber: "123456789",
+      },
+      {
+        name: "Billy Doe",
+        idNumber: "341234567",
+      },
+      {
+        name: "Jodel Magonles",
+        idNumber: "125456789",
+      },
+      {
+        name: "Justin Magonles",
+        idNumber: "3354176789",
+      },
+      {
+        name: "John Lloyd Magonles",
+        idNumber: "7854176789",
+      },
+      {
+        name: "Jerome Magonles",
+        idNumber: "7857896789",
+      },
+      {
+        name: "JM Amor",
+        idNumber: "123567578",
+      },
+      {
+        name: "Post Malone",
+        idNumber: "984323",
+      },
+      {
+        name: "Drake",
+        idNumber: "67436675",
+      },
+      {
+        name: "Travis Scott",
+        idNumber: "956432",
+      },
+    ],
   },
-  {
-    name: "Jane Doe",
-    idNumber: "341234567",
-    attendance: {
-      create: [
-        {
-          date: new Date("2024-05-10"),
-          present: true,
-        },
-        {
-          date: new Date("2023-05-11"),
-          present: true,
-        },
-      ],
-    },
-  },
-  {
-    name: "Diego Doe",
-    idNumber: "335456789",
-    attendance: {
-      create: [
-        {
-          date: new Date("2024-05-10"),
-          present: true,
-        },
-        {
-          date: new Date("2023-05-11"),
-          present: true,
-        },
-      ],
-    },
-  },
-];
+};
 
 async function main() {
   console.log(`Start seeding ...`);
 
-  for (const student of students) {
-    const result = await prisma.student.create({
-      data: student,
-    });
-    console.log(`Created student with id: ${result.id}`);
-  }
+  const hashedPassword = await bcrypt.hash("admin", 10);
+  userData.hashedPassword = hashedPassword;
+
+  await prisma.user.create({
+    data: userData,
+  });
 
   console.log(`Seeding finished.`);
 }
