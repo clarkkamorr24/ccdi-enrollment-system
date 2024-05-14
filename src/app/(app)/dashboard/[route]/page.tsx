@@ -2,17 +2,14 @@ import AttendanceTable from "@/components/attendance";
 import H1 from "@/components/h1";
 import SubjectsTable from "@/components/subject";
 import WeeklyRecordTable from "@/components/weekly-record";
-import React from "react";
 import { getStudents, getSubjects } from "@/actions/action";
 import { checkAuth } from "@/lib/server-utils";
 import NoResultFound from "@/components/no-result-found";
-import { Button } from "@/components/ui/button";
 import { SubjectsModal } from "@/components/subjects-modal";
 
 export default async function Page({ params }: { params: { route: string } }) {
   const session = await checkAuth();
   const students = await getStudents(session.user.id);
-  const subjects = await getSubjects(session.user.id);
 
   return (
     <div className=" md:col-span-full md:col-start-2 p-4">
@@ -35,8 +32,7 @@ export default async function Page({ params }: { params: { route: string } }) {
             List of Subjects
             <SubjectsModal />
           </Title>
-          {!subjects.length && <NoResultFound />}
-          {subjects.length > 0 && <SubjectsTable subjects={subjects} />}
+          <SubjectsTable />
         </div>
       )}
     </div>

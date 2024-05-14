@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -6,40 +8,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import NoResultFound from "./no-result-found";
+import { useSubjectContext } from "@/hooks/useSubject";
 import { getTime } from "@/utils/momentUtils";
 
-export type Subject = {
-  id: string;
-  name: string;
-  start: string;
-  end: string;
-};
+export default function SubjectsTable() {
+  const { subjects } = useSubjectContext();
 
-export type SubjectsTableProps = {
-  subjects: Subject[];
-};
-
-export default function SubjectsTable({ subjects }: SubjectsTableProps) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
-          <TableHead className="w-[400px] font-bold text-white">
-            Subject
-          </TableHead>
-          <TableHead className="font-bold text-white">Schedule</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="text-xs">
-        {subjects.map((subject) => (
-          <TableRow key={subject.id}>
-            <TableCell className="font-medium">{subject.name}</TableCell>
-            <TableCell className="font-medium">
-              {getTime(subject.start)} - {getTime(subject.end)}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      {!subjects.length && <NoResultFound />}
+      {subjects.length > 0 && (
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
+              <TableHead className="w-[400px] font-bold text-white">
+                Subject
+              </TableHead>
+              <TableHead className="font-bold text-white">Schedule</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="text-xs">
+            {subjects.map((subject) => (
+              <TableRow key={subject.userId}>
+                <TableCell className="font-medium">{subject.name}</TableCell>
+                <TableCell className="font-medium">
+                  {getTime(subject.start)} - {getTime(subject.end)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 }

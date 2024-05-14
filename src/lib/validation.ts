@@ -1,5 +1,6 @@
 import moment from "moment";
 import { z } from "zod";
+
 export const authSchema = z.object({
   username: z.string().max(100),
   password: z.string().max(100),
@@ -18,4 +19,4 @@ export const subjectSchema = z
     path: ["end"], // path of error
   });
 
-export type TSubject = z.infer<typeof subjectSchema>;
+export type TSubjectValues = z.infer<typeof subjectSchema>;

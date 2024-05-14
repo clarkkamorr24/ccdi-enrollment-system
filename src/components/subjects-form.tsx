@@ -2,10 +2,31 @@ import React from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import SubjectsFormBtn from "./subjects-form-btn";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TSubjectValues, subjectSchema } from "@/lib/validation";
 
-export default function SubjectsForm() {
+type SubjectsFormProps = {
+  onFormSubmission: () => void;
+};
+
+export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
+  const {
+    register,
+    trigger,
+    getValues,
+    formState: { errors },
+  } = useForm<TSubjectValues>({
+    resolver: zodResolver(subjectSchema),
+  });
+
   return (
-    <form className="flex flex-col">
+    <form
+      className="flex flex-col"
+      action={async () => {
+        const subjectData = "";
+      }}
+    >
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Subject Name</Label>

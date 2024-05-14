@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,8 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import SubjectsForm from "./subjects-form";
 import { AiOutlineUserAdd } from "react-icons/ai";
+import { useState } from "react";
+import { flushSync } from "react-dom";
 
 export function SubjectsModal() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -25,7 +31,13 @@ export function SubjectsModal() {
         <DialogHeader>
           <DialogTitle className="text-ccdi-blue">Add a Subject</DialogTitle>
         </DialogHeader>
-        <SubjectsForm />
+        <SubjectsForm
+          onFormSubmission={() => {
+            flushSync(() => {
+              setIsFormOpen(false);
+            });
+          }}
+        />
         {/* here */}
       </DialogContent>
     </Dialog>
