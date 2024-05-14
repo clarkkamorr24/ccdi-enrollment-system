@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../styles/globals.css";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: "300",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CCDI AMS",
@@ -19,9 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} "text-sm bg-ccdi-blue min-h-screen`}
-      >
+      <body className={`${inter.className} "text-sm bg-ccdi-blue min-h-screen`}>
         {children}
       </body>
     </html>

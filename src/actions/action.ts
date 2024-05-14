@@ -6,10 +6,10 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
-import { authSchema, subjectSchema } from "@/lib/validation";
+import { authSchema, subjectIdSchema, subjectSchema } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 import { Prisma } from "@prisma/client";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, getSubjectById } from "@/lib/server-utils";
 
 //login
 export async function logIn(prevState: unknown, formData: unknown) {
@@ -145,7 +145,7 @@ export async function addAttendance(studentId: any, isPresent: any) {
     };
   }
 
-  revalidatePath("/dashboard/attendance");
+  revalidatePath("/dashboard", "layout");
 }
 
 export async function updateAttendance(attendanceId: any, isPresent: any) {
@@ -168,7 +168,7 @@ export async function updateAttendance(attendanceId: any, isPresent: any) {
     };
   }
 
-  revalidatePath("/dashboard/attendance");
+  revalidatePath("/dashboard", "layout");
 }
 
 export async function geAttendanceByStudentId(studentId: any) {
@@ -206,7 +206,7 @@ export async function getSubjects(userId: any) {
 }
 
 export async function addSubject(subject: unknown) {
-  // await sleep(1000);
+  await sleep(1000);
 
   // authentication check
   const session = await checkAuth();
@@ -234,6 +234,51 @@ export async function addSubject(subject: unknown) {
   } catch (error) {
     return {
       message: "Could not add subject.",
+    };
+  }
+
+  revalidatePath("/dashboard/list-of-subjects");
+}
+
+export async function deleteSubject(subjectId: unknown) {
+  // await sleep(1000);
+
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedSubjectId = subjectIdSchema.safeParse(subjectId);
+  if (!validatedSubjectId.success) {
+    return {
+      message: "Invalid pet data.",
+    };
+  }
+
+  //authorization to check the subject Owner
+  const subject = await getSubjectById(validatedSubjectId.data);
+
+  if (!subject) {
+    return {
+      message: "Pet not found.",
+    };
+  }
+
+  if (subject.userId !== session.user.id) {
+    return {
+      message: "Not authorized to delete this pet.",
+    };
+  }
+
+  //database mutation
+  try {
+    await prisma.subject.delete({
+      where: {
+        id: validatedSubjectId.data,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Could not delete subject.",
     };
   }
 

@@ -19,7 +19,7 @@ export default function AttendanceButton({
       disabled={disabled}
       size="sm"
       className={cn(
-        "text-sm p-3",
+        "text-sm p-2",
         type === "present"
           ? "bg-ccdi-blue/70"
           : "bg-ccdi-red/70 hover:bg-ccdi-red/90"

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -29,11 +31,10 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
         const result = await trigger();
         if (!result) return;
 
-        onFormSubmission();
-
         const subjectData = getValues();
 
         await handleAddSubject(subjectData);
+        onFormSubmission();
       }}
     >
       <div className="space-y-3">

@@ -33,16 +33,17 @@ export default function WeeklyRecordTable() {
               <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
                 <TableHead className="w-[100px] text-white">Name</TableHead>
                 {weekdays.map((weekday) => (
-                  <TableHead
-                    key={weekday}
-                    className={cn(
-                      "text-white",
-                      activeWeekday === weekday
-                        ? "underline font-extrabold"
-                        : ""
-                    )}
-                  >
-                    {weekday}
+                  <TableHead key={weekday}>
+                    <span
+                      className={cn(
+                        "text-white",
+                        activeWeekday === weekday
+                          ? " font-extrabold bg-white rounded-md text-ccdi-blue px-2"
+                          : ""
+                      )}
+                    >
+                      {weekday}
+                    </span>
                   </TableHead>
                 ))}
               </TableRow>

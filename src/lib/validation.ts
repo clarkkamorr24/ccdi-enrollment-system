@@ -1,6 +1,8 @@
 import moment from "moment";
 import { z } from "zod";
 
+export const subjectIdSchema = z.string().cuid();
+
 export const authSchema = z.object({
   username: z.string().max(100),
   password: z.string().max(100),

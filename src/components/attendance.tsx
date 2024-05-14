@@ -64,7 +64,7 @@ export default function AttendanceTable({ students }: AttendanceProps) {
                     </AttendanceButton>
                   </TooltipTrigger>
                   <TooltipContent className="bg-black/70">
-                    <p>Present</p>
+                    <p className="text-[10px]">Present</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -84,7 +84,7 @@ export default function AttendanceTable({ students }: AttendanceProps) {
                     </AttendanceButton>
                   </TooltipTrigger>
                   <TooltipContent className="bg-black/70">
-                    <p>Absent</p>
+                    <p className="text-[10px]">Absent</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

@@ -9,44 +9,44 @@ const userData: Prisma.UserCreateInput = {
   students: {
     create: [
       {
-        name: "John Doe",
-        idNumber: "123456789",
+        name: "Abdul-Jabbar, Kareem",
+        idNumber: "000123",
       },
       {
-        name: "Billy Doe",
-        idNumber: "341234567",
+        name: "Adebayo, Bam",
+        idNumber: "000124",
       },
       {
-        name: "Jodel Magonles",
-        idNumber: "125456789",
+        name: "Antetokounmpo, Giannis",
+        idNumber: "000212",
       },
       {
-        name: "Justin Magonles",
-        idNumber: "3354176789",
+        name: "Curry, Stephen Wardell",
+        idNumber: "000213",
       },
       {
-        name: "John Lloyd Magonles",
-        idNumber: "7854176789",
+        name: "Davis, Anthony",
+        idNumber: "000214",
       },
       {
-        name: "Jerome Magonles",
-        idNumber: "7857896789",
+        name: "Howard, Dwight",
+        idNumber: "000312",
       },
       {
-        name: "JM Amor",
-        idNumber: "123567578",
+        name: "Green, Danny",
+        idNumber: "000314",
       },
       {
-        name: "Post Malone",
-        idNumber: "984323",
+        name: "Green, Draymond",
+        idNumber: "000317",
       },
       {
-        name: "Drake",
-        idNumber: "67436675",
+        name: "James, Lebron",
+        idNumber: "000318",
       },
       {
-        name: "Travis Scott",
-        idNumber: "956432",
+        name: "Jordan, Michael",
+        idNumber: "000666",
       },
     ],
   },

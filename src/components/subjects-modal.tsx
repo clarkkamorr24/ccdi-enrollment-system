@@ -20,7 +20,7 @@ export function SubjectsModal() {
     <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
       <DialogTrigger asChild>
         <Button
-          className="absolute right-0 h bg-ccdi-blue/80 hover:bg-ccdi-blue"
+          className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-8"
           size="sm"
           variant="destructive"
         >
