@@ -11,7 +11,7 @@ export const sideItems = [
   },
   {
     id: 3,
-    name: "List of Subjects",
+    name: "Subjects",
     href: "/dashboard/list-of-subjects",
   },
 ];

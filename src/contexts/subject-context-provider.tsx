@@ -1,8 +1,10 @@
 "use client";
 
+import { addSubject } from "@/actions/action";
 import { SubjectType } from "@/lib/types";
 import { Subject } from "@prisma/client";
 import { createContext } from "react";
+import { toast } from "sonner";
 
 type SubjectContextProviderProps = {
   data: Subject[];
@@ -10,6 +12,7 @@ type SubjectContextProviderProps = {
 };
 
 type TSubjectContext = {
+  handleAddSubject: (subject: SubjectType) => Promise<void>;
   subjects: Subject[];
 };
 
@@ -22,13 +25,19 @@ export default function SubjectContextProvider({
   //states
 
   //event hadnlers
-  const handleAddSubject = (subject: SubjectType) => {
-    console.log(subject);
+  const handleAddSubject = async (subject: SubjectType) => {
+    const error = await addSubject(subject);
+    if (error) {
+      toast.warning(error.message);
+      return;
+    }
   };
+
   return (
     <SubjectContext.Provider
       value={{
         subjects: data,
+        handleAddSubject,
       }}
     >
       {children}

@@ -5,12 +5,14 @@ import SubjectsFormBtn from "./subjects-form-btn";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TSubjectValues, subjectSchema } from "@/lib/validation";
+import { useSubjectContext } from "@/hooks/useSubject";
 
 type SubjectsFormProps = {
   onFormSubmission: () => void;
 };
 
 export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
+  const { handleAddSubject } = useSubjectContext();
   const {
     register,
     trigger,
@@ -24,23 +26,49 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
     <form
       className="flex flex-col"
       action={async () => {
-        const subjectData = "";
+        const result = await trigger();
+        if (!result) return;
+
+        onFormSubmission();
+
+        const subjectData = getValues();
+
+        await handleAddSubject(subjectData);
       }}
     >
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Subject Name</Label>
-          <Input id="teacherId" name="name" />
+          <Input id="teacherId" {...register("name")} />
+          {errors.name && (
+            <p className="text-red-500 text-xs">{errors.name.message}</p>
+          )}
         </div>
         <p className="text-sm font-bold text-ccdi-blue">Set your schedule</p>
         <div className="flex gap-x-2">
           <div className="space-y-1 w-full">
             <Label htmlFor="start">Start</Label>
-            <Input id="start" name="start" type="time" className="relative" />
+            <Input
+              id="start"
+              type="time"
+              className="relative"
+              {...register("start")}
+            />
+            {errors.start && (
+              <p className="text-red-500 text-xs">{errors.start.message}</p>
+            )}
           </div>
           <div className="space-y-1 w-full">
             <Label htmlFor="end">End</Label>
-            <Input id="end" name="end" type="time" className="relative" />
+            <Input
+              id="end"
+              type="time"
+              className="relative"
+              {...register("end")}
+            />
+            {errors.end && (
+              <p className="text-red-500 text-xs">{errors.end.message}</p>
+            )}
           </div>
         </div>
       </div>

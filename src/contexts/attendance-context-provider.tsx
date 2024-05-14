@@ -75,17 +75,17 @@ export default function AttendanceContextProvider({
     //check if the attendance already exists
     const filteredAttendance = attendance.some(
       (attendance) =>
-        getFixedDate(attendance.createdAt).format("l") ===
-        moment(todayDate).format("l")
+        getFixedDate(attendance.createdAt).format("l") === moment().format("l")
     );
+
+    // console.log("attedance", attendance);
 
     let filterData = attendance.find(
       (attendance) =>
-        getFixedDate(attendance.createdAt).format("l") ===
-        moment(todayDate).format("l")
+        getFixedDate(attendance.createdAt).format("l") === moment().format("l")
     );
 
-    //update attendance
+    // update attendance
     if (filteredAttendance) {
       setOptimisticRecords({ action: "update", payload: studentId });
 

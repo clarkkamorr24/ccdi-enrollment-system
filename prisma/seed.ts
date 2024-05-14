@@ -53,7 +53,7 @@ const userData: Prisma.UserCreateInput = {
   subjects: {
     create: [
       {
-        name: "Nathaniel",
+        name: "English",
         start: "09:00",
         end: "10:00",
       },

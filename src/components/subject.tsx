@@ -30,7 +30,7 @@ export default function SubjectsTable() {
           </TableHeader>
           <TableBody className="text-xs">
             {subjects.map((subject) => (
-              <TableRow key={subject.userId}>
+              <TableRow key={subject.id}>
                 <TableCell className="font-medium">{subject.name}</TableCell>
                 <TableCell className="font-medium">
                   {getTime(subject.start)} - {getTime(subject.end)}
