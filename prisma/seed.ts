@@ -50,6 +50,15 @@ const userData: Prisma.UserCreateInput = {
       },
     ],
   },
+  subjects: {
+    create: [
+      {
+        name: "Nathaniel",
+        start: "09:00",
+        end: "10:00",
+      },
+    ],
+  },
 };
 
 async function main() {

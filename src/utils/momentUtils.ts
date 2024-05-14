@@ -38,3 +38,8 @@ export function getTodayDate() {
 
   return todaysDate;
 }
+export function getTime(time: string) {
+  const convertedTime = moment(time, "h:mm a").format("hh:mm A");
+
+  return convertedTime;
+}

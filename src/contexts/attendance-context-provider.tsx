@@ -8,6 +8,7 @@ import {
 } from "@/actions/action";
 import { TRecord } from "@/types/record";
 import { getTodayDate } from "@/utils/getTodayDate";
+import { getFixedDate } from "@/utils/momentUtils";
 import moment from "moment";
 import { createContext, useOptimistic } from "react";
 import { toast } from "sonner";
@@ -74,13 +75,13 @@ export default function AttendanceContextProvider({
     //check if the attendance already exists
     const filteredAttendance = attendance.some(
       (attendance) =>
-        moment(attendance.createdAt).format("l") ===
+        getFixedDate(attendance.createdAt).format("l") ===
         moment(todayDate).format("l")
     );
 
     let filterData = attendance.find(
       (attendance) =>
-        moment(attendance.createdAt).format("l") ===
+        getFixedDate(attendance.createdAt).format("l") ===
         moment(todayDate).format("l")
     );
 

@@ -14,15 +14,6 @@ export async function checkAuth() {
   return session;
 }
 
-export async function checkDashboardAuth() {
-  const session = await auth();
-  if (session?.user) {
-    redirect("/dashboard");
-  }
-
-  return session;
-}
-
 export async function getUserByUsername(username: User["username"]) {
   const user = await prisma.user.findUnique({
     where: {

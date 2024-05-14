@@ -1,6 +1,7 @@
 import Logo from "@/components/logo";
-import { checkDashboardAuth } from "@/lib/server-utils";
+import { auth } from "@/lib/auth-no-edge";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function AuthLayout({
@@ -8,7 +9,11 @@ export default async function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await checkDashboardAuth();
+  const session = await auth();
+
+  if (session?.user) {
+    redirect("/dashboard");
+  }
 
   return (
     <div className="flex flex-col max-w-md mx-auto justify-center items-center min-h-screen px-4">

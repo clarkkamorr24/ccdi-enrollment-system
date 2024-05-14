@@ -6,9 +6,10 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
-import { authSchema } from "@/lib/validation";
+import { authSchema, subjectSchema } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 import { Prisma } from "@prisma/client";
+import { checkAuth } from "@/lib/server-utils";
 
 //login
 export async function logIn(prevState: unknown, formData: unknown) {
@@ -99,6 +100,7 @@ export async function logout() {
   });
 }
 
+//students
 export async function getStudent(id: any) {
   const student = await prisma.student.findUnique({
     where: {
@@ -119,6 +121,7 @@ export async function getStudents(userId: any) {
   return students;
 }
 
+//attendance
 export async function addAttendance(studentId: any, isPresent: any) {
   const todayDate = getTodayDate();
 
@@ -189,4 +192,50 @@ export async function getAttendanceRecord(userId: any) {
   });
 
   return studentAttendance;
+}
+
+//subjects
+export async function getSubjects(userId: any) {
+  const subjects = await prisma.subject.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+
+  return subjects;
+}
+
+export async function addSubject(subject: unknown) {
+  // await sleep(1000);
+
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedSubject = subjectSchema.safeParse(subject);
+  if (!validatedSubject.success) {
+    return {
+      message: "Invalid pet data.",
+    };
+  }
+
+  //database mutation
+  try {
+    await prisma.subject.create({
+      data: {
+        ...validatedSubject.data,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Could not add subject.",
+    };
+  }
+
+  revalidatePath("/dashboard/list-of-subjects");
 }
