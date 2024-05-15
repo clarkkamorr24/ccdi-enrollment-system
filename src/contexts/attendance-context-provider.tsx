@@ -3,12 +3,11 @@
 import {
   addAttendance,
   geAttendanceByStudentId,
-  getStudent,
+  getStudentById,
   updateAttendance,
 } from "@/actions/action";
 import moment from "moment";
 import { TRecord } from "@/types/record";
-import { getTodayDate } from "@/utils/getTodayDate";
 import { getFixedDate } from "@/utils/momentUtils";
 import { createContext, useOptimistic } from "react";
 import { toast } from "sonner";
@@ -67,10 +66,7 @@ export default function AttendanceContextProvider({
     const attendance = await geAttendanceByStudentId(studentId);
 
     //get the student by id
-    const student = await getStudent(studentId);
-
-    //get the today date
-    const todayDate = getTodayDate();
+    const student = await getStudentById(studentId);
 
     //check if the attendance already exists
     const filteredAttendance = attendance.some(
@@ -99,7 +95,9 @@ export default function AttendanceContextProvider({
 
     //proceed to add attendance
     setOptimisticRecords({ action: "add", payload: studentId });
-    toast.success(`${student?.name} marked as present`);
+    toast.success(
+      `${student?.name} marked as ${type === "absent" ? "absent" : "present"}`
+    );
     const error = await addAttendance(
       studentId,
       type === "absent" ? false : true

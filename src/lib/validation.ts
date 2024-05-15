@@ -2,6 +2,7 @@ import moment from "moment";
 import { z } from "zod";
 
 export const subjectIdSchema = z.string().cuid();
+export const studentIdSchema = z.string().cuid();
 
 export const authSchema = z.object({
   username: z.string().max(100),
@@ -25,3 +26,10 @@ export const subjectSchema = z
   );
 
 export type TSubjectValues = z.infer<typeof subjectSchema>;
+
+export const studentSchema = z.object({
+  name: z.string().min(1, "Student name should not be empty").max(50),
+  idNumber: z.string().min(1, "Student ID should not be empty").max(50),
+});
+
+export type TStudentValues = z.infer<typeof studentSchema>;

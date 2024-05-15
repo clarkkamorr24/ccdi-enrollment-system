@@ -6,9 +6,15 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
-import { authSchema, subjectIdSchema, subjectSchema } from "@/lib/validation";
+import {
+  authSchema,
+  studentIdSchema,
+  studentSchema,
+  subjectIdSchema,
+  subjectSchema,
+} from "@/lib/validation";
 import bcrypt from "bcryptjs";
-import { Prisma } from "@prisma/client";
+import { Attendance, Prisma, Student, Subject } from "@prisma/client";
 import { checkAuth, getSubjectById } from "@/lib/server-utils";
 
 //login
@@ -101,7 +107,7 @@ export async function logout() {
 }
 
 //students
-export async function getStudent(id: any) {
+export async function getStudentById(id: string) {
   const student = await prisma.student.findUnique({
     where: {
       id: id,
@@ -111,7 +117,7 @@ export async function getStudent(id: any) {
   return student;
 }
 
-export async function getStudents(userId: any) {
+export async function getStudents(userId: string) {
   const students = await prisma.student.findMany({
     where: {
       userId: userId,
@@ -121,8 +127,102 @@ export async function getStudents(userId: any) {
   return students;
 }
 
+export async function addStudent(student: unknown) {
+  await sleep(1000);
+  console.log("student", student);
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedStudent = studentSchema.safeParse(student);
+  if (!validatedStudent.success) {
+    return {
+      message: "Invalid pet data.",
+    };
+  }
+
+  //database mutation
+  try {
+    await prisma.student.create({
+      data: {
+        ...validatedStudent.data,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {
+          message: "Student ID already exists.",
+        };
+      }
+    }
+    return {
+      message: "Could not add student.",
+    };
+  }
+
+  revalidatePath("/dashboard", "layout");
+}
+
+export async function deleteStudent(studentId: unknown) {
+  // await sleep(1000);
+
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedStudentId = studentIdSchema.safeParse(studentId);
+  if (!validatedStudentId.success) {
+    return {
+      message: "Invalid pet data.",
+    };
+  }
+
+  //authorization to check the student Owner
+  const student = await getStudentById(validatedStudentId.data);
+
+  if (!student) {
+    return {
+      message: "Student not found.",
+    };
+  }
+
+  if (student.userId !== session.user.id) {
+    return {
+      message: "Not authorized to delete this student.",
+    };
+  }
+
+  //database mutation
+  try {
+    await prisma.student.delete({
+      where: {
+        id: validatedStudentId.data,
+      },
+      include: {
+        attendance: true, // This ensures that the related attendance records are also considered in the transaction
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Could not delete student.",
+    };
+  }
+
+  revalidatePath("/dashboard", "layout");
+}
+
 //attendance
-export async function addAttendance(studentId: any, isPresent: any) {
+
+export async function addAttendance(
+  studentId: Student["id"],
+  isPresent: boolean
+) {
   const todayDate = getTodayDate();
 
   try {
@@ -148,7 +248,10 @@ export async function addAttendance(studentId: any, isPresent: any) {
   revalidatePath("/dashboard", "layout");
 }
 
-export async function updateAttendance(attendanceId: any, isPresent: any) {
+export async function updateAttendance(
+  attendanceId: Attendance["id"],
+  isPresent: boolean
+) {
   const todayDate = getTodayDate();
 
   try {
@@ -171,7 +274,7 @@ export async function updateAttendance(attendanceId: any, isPresent: any) {
   revalidatePath("/dashboard", "layout");
 }
 
-export async function geAttendanceByStudentId(studentId: any) {
+export async function geAttendanceByStudentId(studentId: Student["id"]) {
   const attendance = await prisma.attendance.findMany({
     where: {
       studentId: studentId,
@@ -181,7 +284,7 @@ export async function geAttendanceByStudentId(studentId: any) {
   return attendance;
 }
 
-export async function getAttendanceRecord(userId: any) {
+export async function getAttendanceRecord(userId: string) {
   const studentAttendance = await prisma.student.findMany({
     where: {
       userId: userId,
@@ -195,7 +298,7 @@ export async function getAttendanceRecord(userId: any) {
 }
 
 //subjects
-export async function getSubjects(userId: any) {
+export async function getSubjects(userId: Subject["userId"]) {
   const subjects = await prisma.subject.findMany({
     where: {
       userId: userId,

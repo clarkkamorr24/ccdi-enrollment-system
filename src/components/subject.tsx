@@ -19,7 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import SubjectConfirmationModal from "./subject-confirmation-modal";
+import ConfirmationModal from "./confirmation-modal";
 
 export default function SubjectsTable() {
   const { subjects } = useSubjectContext();
@@ -46,7 +46,7 @@ export default function SubjectsTable() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
-                        <SubjectConfirmationModal
+                        <ConfirmationModal
                           id={subject.id}
                           name={subject.name}
                         />

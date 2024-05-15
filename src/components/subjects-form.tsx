@@ -40,7 +40,7 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Subject Name</Label>
-          <Input id="teacherId" {...register("name")} />
+          <Input id="name" {...register("name")} />
           {errors.name && (
             <p className="text-red-500 text-xs">{errors.name.message}</p>
           )}

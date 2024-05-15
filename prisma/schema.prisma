@@ -25,7 +25,7 @@ model Student {
   user       User         @relation(fields: [userId], references: [id])
   userId     String
   name       String
-  idNumber   String       @unique
+  idNumber   String
   attendance Attendance[]
   updatedAt  DateTime     @updatedAt
   createdAt  DateTime     @default(now())

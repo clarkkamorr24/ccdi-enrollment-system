@@ -14,15 +14,15 @@ import { DialogClose, DialogDescription } from "@radix-ui/react-dialog";
 import { useSubjectContext } from "@/hooks/useSubject";
 import { Subject } from "@prisma/client";
 
-type SubjectConfirmationModalProps = {
-  name: Subject["name"];
-  id: Subject["id"];
+type ConfirmationModalProps = {
+  name?: Subject["name"];
+  id?: Subject["id"];
 };
 
-export default function SubjectConfirmationModal({
+export default function ConfirmationModal({
   name,
   id,
-}: SubjectConfirmationModalProps) {
+}: ConfirmationModalProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { handleDeleteSubject } = useSubjectContext();
 
@@ -50,6 +50,7 @@ export default function SubjectConfirmationModal({
               variant="destructive"
               onClick={async () => {
                 setIsFormOpen(false);
+                if (!id) return;
                 handleDeleteSubject(id);
               }}
             >
