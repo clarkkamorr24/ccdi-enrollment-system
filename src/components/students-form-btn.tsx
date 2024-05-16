@@ -10,8 +10,8 @@ export default function StudentsFormBtn({ action }: { action: Action }) {
     <Button disabled={pending} className="mt-5 self-end" size="sm">
       {pending
         ? action === "add"
-          ? "Updating Student..."
-          : "Adding Student..."
+          ? "Adding Student..."
+          : "Updating Student..."
         : action === "edit"
         ? "Update Student"
         : "Add Student"}

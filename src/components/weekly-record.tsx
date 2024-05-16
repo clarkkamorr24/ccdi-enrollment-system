@@ -18,6 +18,7 @@ import NoResultFound from "./no-result-found";
 export default function WeeklyRecordTable() {
   const { records } = useAttendanceContext();
   const activeWeekday = moment().format("ddd");
+  const activeDay = moment().format("DD");
   const { endOfWeekFormatted, startOfWeekFormatted } = getRangeOfTheWeek();
 
   return (
@@ -39,11 +40,12 @@ export default function WeeklyRecordTable() {
                         className={cn(
                           "text-white",
                           activeWeekday === weekday
-                            ? " font-extrabold bg-white rounded-md text-ccdi-blue px-2"
+                            ? "font-extrabold bg-white rounded-md text-ccdi-blue px-2"
                             : ""
                         )}
                       >
-                        {weekday}
+                        {activeWeekday === weekday && weekday + ` ${activeDay}`}
+                        {activeWeekday !== weekday && weekday}
                       </span>
                     </TableHead>
                   ))}
