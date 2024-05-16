@@ -1,42 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import { AiFillFileExcel } from "react-icons/ai";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { DialogClose, DialogDescription } from "@radix-ui/react-dialog";
 import { useSubjectContext } from "@/hooks/useSubject";
-import { Subject } from "@prisma/client";
+import { Classification } from "@/lib/types";
+import { useStudentContext } from "@/hooks/useStudent";
 
 type ConfirmationModalProps = {
-  name?: Subject["name"];
-  id?: Subject["id"];
+  setIsOpen: (isOpen: boolean) => void;
+  isOpen: boolean;
+  type: Classification;
 };
 
 export default function ConfirmationModal({
-  name,
-  id,
+  isOpen = false,
+  setIsOpen,
+  type,
 }: ConfirmationModalProps) {
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const { handleDeleteSubject } = useSubjectContext();
-
+  const { handleDeleteStudent } = useStudentContext();
+  const { selectedStudentId } = useStudentContext();
+  const { selectedSubjectId } = useSubjectContext();
   return (
-    <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-      <DialogTrigger asChild>
-        <p className="bg-ccdi-red/70 hover:bg-ccdi-red/90 rounded-md p-2">
-          <AiFillFileExcel size={15} color="white" />
-        </p>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-sm mx-auto space-y-4">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-ccdi-blue text-sm text-center">
-            Are you sure you want to delete {name} subject?
+            Are you sure you want to proceed?
           </DialogTitle>
           <DialogDescription className="text-center space-x-2">
             <DialogClose asChild>
@@ -49,9 +40,13 @@ export default function ConfirmationModal({
               size="sm"
               variant="destructive"
               onClick={async () => {
-                setIsFormOpen(false);
-                if (!id) return;
-                handleDeleteSubject(id);
+                setIsOpen(false);
+                {
+                  type === "subject" && handleDeleteSubject(selectedSubjectId!);
+                }
+                {
+                  type === "student" && handleDeleteStudent(selectedStudentId!);
+                }
               }}
             >
               Yes

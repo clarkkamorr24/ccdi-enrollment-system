@@ -92,8 +92,7 @@ export default function AttendanceTable() {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <Action />
-                    {/* action */}
+                    <Action type="student" id={student.id} />
                   </TableCell>
                 </TableRow>
               ))}

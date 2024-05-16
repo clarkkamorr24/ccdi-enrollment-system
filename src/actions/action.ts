@@ -137,7 +137,7 @@ export async function addStudent(student: unknown) {
   const validatedStudent = studentSchema.safeParse(student);
   if (!validatedStudent.success) {
     return {
-      message: "Invalid pet data.",
+      message: "Invalid student data.",
     };
   }
 
@@ -169,6 +169,51 @@ export async function addStudent(student: unknown) {
   revalidatePath("/dashboard", "layout");
 }
 
+export async function updateStudent(id: string, newStudent: unknown) {
+  await sleep(1000);
+  console.log("student", newStudent);
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedStudentId = studentIdSchema.safeParse(id);
+  const validatedStudent = studentSchema.safeParse(newStudent);
+  if (!validatedStudentId.success || !validatedStudent.success) {
+    return {
+      message: "Invalid student data.",
+    };
+  }
+
+  const student = await getStudentById(id);
+
+  if (!student) {
+    return {
+      message: "Student not found.",
+    };
+  }
+
+  if (student.userId !== session.user.id) {
+    return {
+      message: "Not authorized to delete this student.",
+    };
+  }
+  //database mutation
+  try {
+    await prisma.student.update({
+      where: {
+        id: validatedStudentId.data,
+      },
+      data: validatedStudent.data,
+    });
+  } catch (error) {
+    return {
+      message: "Could not update student.",
+    };
+  }
+
+  revalidatePath("/dashboard", "layout");
+}
+
 export async function deleteStudent(studentId: unknown) {
   // await sleep(1000);
 
@@ -179,7 +224,7 @@ export async function deleteStudent(studentId: unknown) {
   const validatedStudentId = studentIdSchema.safeParse(studentId);
   if (!validatedStudentId.success) {
     return {
-      message: "Invalid pet data.",
+      message: "Invalid student data.",
     };
   }
 
@@ -204,9 +249,6 @@ export async function deleteStudent(studentId: unknown) {
       where: {
         id: validatedStudentId.data,
       },
-      include: {
-        attendance: true, // This ensures that the related attendance records are also considered in the transaction
-      },
     });
   } catch (error) {
     return {
@@ -214,7 +256,7 @@ export async function deleteStudent(studentId: unknown) {
     };
   }
 
-  revalidatePath("/dashboard", "layout");
+  revalidatePath("/dashboard/attendance-weekly-record");
 }
 
 //attendance
@@ -318,7 +360,7 @@ export async function addSubject(subject: unknown) {
   const validatedSubject = subjectSchema.safeParse(subject);
   if (!validatedSubject.success) {
     return {
-      message: "Invalid pet data.",
+      message: "Invalid subject data.",
     };
   }
 
@@ -340,7 +382,52 @@ export async function addSubject(subject: unknown) {
     };
   }
 
-  revalidatePath("/dashboard/list-of-subjects");
+  revalidatePath("/dashboard", "layout");
+}
+
+export async function updateSubject(id: string, newSubject: unknown) {
+  await sleep(1000);
+
+  // authentication check
+  const session = await checkAuth();
+
+  // validation
+  const validatedSubjectId = subjectIdSchema.safeParse(id);
+  const validatedSubject = subjectSchema.safeParse(newSubject);
+  if (!validatedSubject.success || !validatedSubjectId.success) {
+    return {
+      message: "Invalid subject data.",
+    };
+  }
+
+  const subject = await getSubjectById(id);
+
+  if (!subject) {
+    return {
+      message: "Subject not found.",
+    };
+  }
+
+  if (subject.userId !== session.user.id) {
+    return {
+      message: "Not authorized to delete this subject.",
+    };
+  }
+  //database mutation
+  try {
+    await prisma.subject.update({
+      where: {
+        id: validatedSubjectId.data,
+      },
+      data: validatedSubject.data,
+    });
+  } catch (error) {
+    return {
+      message: "Could not update subject.",
+    };
+  }
+
+  revalidatePath("/dashboard", "layout");
 }
 
 export async function deleteSubject(subjectId: unknown) {
@@ -353,7 +440,7 @@ export async function deleteSubject(subjectId: unknown) {
   const validatedSubjectId = subjectIdSchema.safeParse(subjectId);
   if (!validatedSubjectId.success) {
     return {
-      message: "Invalid pet data.",
+      message: "Invalid subject data.",
     };
   }
 
@@ -362,13 +449,13 @@ export async function deleteSubject(subjectId: unknown) {
 
   if (!subject) {
     return {
-      message: "Pet not found.",
+      message: "Subject not found.",
     };
   }
 
   if (subject.userId !== session.user.id) {
     return {
-      message: "Not authorized to delete this pet.",
+      message: "Not authorized to delete this subject.",
     };
   }
 
@@ -385,5 +472,5 @@ export async function deleteSubject(subjectId: unknown) {
     };
   }
 
-  revalidatePath("/dashboard/list-of-subjects");
+  revalidatePath("/dashboard", "layout");
 }

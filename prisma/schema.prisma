@@ -33,7 +33,7 @@ model Student {
 
 model Attendance {
   id        String   @id @default(cuid())
-  student   Student  @relation(fields: [studentId], references: [id])
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId String
   present   Boolean  @default(false)
   updatedAt DateTime @updatedAt

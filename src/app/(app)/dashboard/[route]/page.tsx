@@ -4,6 +4,7 @@ import SubjectsTable from "@/components/subject";
 import WeeklyRecordTable from "@/components/weekly-record";
 import { checkAuth } from "@/lib/server-utils";
 import Modal from "@/components/modal";
+import IconWithModal from "@/components/icon-with-modal";
 
 export default async function Page({ params }: { params: { route: string } }) {
   const session = await checkAuth();
@@ -13,7 +14,7 @@ export default async function Page({ params }: { params: { route: string } }) {
       {params.route === "attendance" && (
         <div className="relative">
           <Title>
-            <Modal modalType="student" />
+            <IconWithModal modalType="student" />
             List of Students
           </Title>
 
@@ -30,7 +31,7 @@ export default async function Page({ params }: { params: { route: string } }) {
         <div className="relative">
           <Title>
             List of Subjects
-            <Modal modalType="subject" />
+            <IconWithModal modalType="subject" />
           </Title>
           <SubjectsTable />
         </div>

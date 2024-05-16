@@ -11,15 +11,7 @@ import {
 import NoResultFound from "./no-result-found";
 import { useSubjectContext } from "@/hooks/useSubject";
 import { getTime } from "@/utils/momentUtils";
-import { Button } from "./ui/button";
-import { AiFillFileExcel } from "react-icons/ai";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
-import ConfirmationModal from "./confirmation-modal";
+import Action from "./action";
 
 export default function SubjectsTable() {
   const { subjects } = useSubjectContext();
@@ -43,19 +35,7 @@ export default function SubjectsTable() {
                 <TableCell className="font-medium">{subject.name}</TableCell>
                 <TableCell className="font-medium flex justify-between md:w-[80%] items-center">
                   {getTime(subject.start)} - {getTime(subject.end)}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <ConfirmationModal
-                          id={subject.id}
-                          name={subject.name}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-black/70 ">
-                        <p className="text-[10px]">Delete</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Action id={subject.id} type="subject" />
                 </TableCell>
               </TableRow>
             ))}

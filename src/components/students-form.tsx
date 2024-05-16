@@ -8,13 +8,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TStudentValues, studentSchema } from "@/lib/validation";
 import StudentsFormBtn from "./students-form-btn";
 import { useStudentContext } from "@/hooks/useStudent";
+import { Action } from "@/lib/types";
 
 type StudentsFormProps = {
+  action: Action;
   onFormSubmission: () => void;
 };
 
-export default function StudentsForm({ onFormSubmission }: StudentsFormProps) {
-  const { handleAddStudent } = useStudentContext();
+export default function StudentsForm({
+  onFormSubmission,
+  action,
+}: StudentsFormProps) {
+  const { handleAddStudent, handleEditStudent, selectedStudent } =
+    useStudentContext();
+
   const {
     register,
     trigger,
@@ -22,6 +29,13 @@ export default function StudentsForm({ onFormSubmission }: StudentsFormProps) {
     formState: { errors },
   } = useForm<TStudentValues>({
     resolver: zodResolver(studentSchema),
+    defaultValues:
+      action === "edit"
+        ? {
+            name: selectedStudent?.name,
+            idNumber: selectedStudent?.idNumber,
+          }
+        : undefined,
   });
 
   return (
@@ -33,7 +47,11 @@ export default function StudentsForm({ onFormSubmission }: StudentsFormProps) {
 
         const studentData = getValues();
 
-        await handleAddStudent(studentData);
+        if (action === "add") {
+          await handleAddStudent(studentData);
+        } else if (action === "edit") {
+          await handleEditStudent(selectedStudent!.id, studentData);
+        }
 
         onFormSubmission();
       }}
@@ -54,7 +72,7 @@ export default function StudentsForm({ onFormSubmission }: StudentsFormProps) {
           )}
         </div>
       </div>
-      <StudentsFormBtn />
+      <StudentsFormBtn action={action} />
     </form>
   );
 }

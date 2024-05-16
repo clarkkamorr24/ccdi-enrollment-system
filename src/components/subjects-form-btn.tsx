@@ -1,23 +1,20 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { useFormStatus } from "react-dom";
-import { AiOutlineLoading } from "react-icons/ai";
+import { Action } from "@/lib/types";
 
-export default function SubjectsFormBtn() {
+export default function SubjectsFormBtn({ action }: { action: Action }) {
   const { pending } = useFormStatus();
 
   return (
     <Button disabled={pending} className="mt-5 self-end" size="sm">
-      {pending ? (
-        <>
-          {"Adding Subject..."}
-          {/* <p className="ml-3 animate-spin">
-            <AiOutlineLoading />
-          </p>{" "} */}
-        </>
-      ) : (
-        "Add Subject"
-      )}
+      {pending
+        ? action === "add"
+          ? "Adding Subject..."
+          : "Updating Subject..."
+        : action === "edit"
+        ? "Update Subject"
+        : "Add Subject"}
     </Button>
   );
 }

@@ -8,46 +8,54 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AiFillFileAdd, AiOutlineUserAdd } from "react-icons/ai";
-import { useState } from "react";
+import { AiFillFileAdd } from "react-icons/ai";
 import { flushSync } from "react-dom";
 import SubjectsForm from "./subjects-form";
 import StudentsForm from "./students-form";
+import { Action, Classification } from "@/lib/types";
 
 type ModalProps = {
-  modalType: "subject" | "student";
+  setIsModalOpen: (isModalOpen: boolean) => void;
+  isModalOpen: boolean;
+  modalType?: Classification;
+  action: Action;
 };
 
-export default function Modal({ modalType }: ModalProps) {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
+export default function Modal({
+  action,
+  modalType,
+  isModalOpen,
+  setIsModalOpen,
+}: ModalProps) {
   return (
-    <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-      <DialogTrigger asChild>
-        <Button
-          className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-8"
-          size="sm"
-          variant="destructive"
-        >
-          {modalType === "subject" ? (
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      {action === "add" && (
+        <DialogTrigger asChild>
+          <Button
+            className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-8"
+            size="sm"
+            variant="destructive"
+          >
             <AiFillFileAdd size={20} />
-          ) : (
-            <AiOutlineUserAdd size={20} />
-          )}
-        </Button>
-      </DialogTrigger>
+          </Button>
+        </DialogTrigger>
+      )}
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-ccdi-blue">
-            {modalType === "subject" ? "Add a Subject" : "Add a Student"}
+            {modalType === "subject"
+              ? `${action === "edit" ? "Edit Subject" : "Add a Subject"}`
+              : `${action === "edit" ? "Edit Student" : "Add a Student"}`}
           </DialogTitle>
         </DialogHeader>
 
         {modalType === "subject" && (
           <SubjectsForm
+            action={action}
             onFormSubmission={() => {
               flushSync(() => {
-                setIsFormOpen(false);
+                setIsModalOpen(false);
               });
             }}
           />
@@ -55,9 +63,10 @@ export default function Modal({ modalType }: ModalProps) {
 
         {modalType === "student" && (
           <StudentsForm
+            action={action}
             onFormSubmission={() => {
               flushSync(() => {
-                setIsFormOpen(false);
+                setIsModalOpen(false);
               });
             }}
           />

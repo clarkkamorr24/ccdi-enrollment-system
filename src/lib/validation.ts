@@ -27,9 +27,17 @@ export const subjectSchema = z
 
 export type TSubjectValues = z.infer<typeof subjectSchema>;
 
+const isNumber = (value: string) => /^\d+$/.test(value);
+
 export const studentSchema = z.object({
   name: z.string().min(1, "Student name should not be empty").max(50),
-  idNumber: z.string().min(1, "Student ID should not be empty").max(50),
+  idNumber: z
+    .string()
+    .min(1, "Student ID should not be empty")
+    .max(50)
+    .refine(isNumber, {
+      message: "Student ID must be a number",
+    }),
 });
 
 export type TStudentValues = z.infer<typeof studentSchema>;

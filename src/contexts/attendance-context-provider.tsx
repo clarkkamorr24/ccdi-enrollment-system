@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import { TRecord } from "@/types/record";
 import { getFixedDate } from "@/utils/momentUtils";
-import { createContext, useOptimistic } from "react";
+import { createContext } from "react";
 import { toast } from "sonner";
 
 type AttendanceContextProviderProps = {
@@ -32,31 +32,31 @@ export default function AttendanceContextProvider({
   children,
 }: AttendanceContextProviderProps) {
   //states
-  const [optimisticRecords, setOptimisticRecords] = useOptimistic(
-    data,
-    (state, { action, payload }) => {
-      switch (action) {
-        case "add":
-          return {
-            ...state,
-            [payload.studentId]: {
-              ...state[payload.studentId],
-              [payload.day]: payload.isPresent,
-            },
-          };
-        case "update":
-          return {
-            ...state,
-            [payload.studentId]: {
-              ...state[payload.studentId],
-              [payload.day]: payload.isPresent,
-            },
-          };
-        default:
-          return state;
-      }
-    }
-  );
+  // const [optimisticRecords, setOptimisticRecords] = useOptimistic(
+  //   data,
+  //   (state, { action, payload }) => {
+  //     switch (action) {
+  //       case "add":
+  //         return {
+  //           ...state,
+  //           [payload.studentId]: {
+  //             ...state[payload.studentId],
+  //             [payload.day]: payload.isPresent,
+  //           },
+  //         };
+  //       case "update":
+  //         return {
+  //           ...state,
+  //           [payload.studentId]: {
+  //             ...state[payload.studentId],
+  //             [payload.day]: payload.isPresent,
+  //           },
+  //         };
+  //       default:
+  //         return state;
+  //     }
+  //   }
+  // );
 
   const handleMarkAs = async (
     studentId: string,
@@ -83,18 +83,21 @@ export default function AttendanceContextProvider({
 
     // update attendance
     if (filteredAttendance) {
-      setOptimisticRecords({ action: "update", payload: studentId });
+      // setOptimisticRecords({ action: "update", payload: studentId });
 
       type === "absent"
         ? toast.warning(`${student?.name} marked as absent`)
         : toast.success(`${student?.name} marked as present`);
 
-      await updateAttendance(filterData?.id, type === "absent" ? false : true);
+      await updateAttendance(
+        filterData?.id as string,
+        type === "absent" ? false : true
+      );
       return;
     }
 
     //proceed to add attendance
-    setOptimisticRecords({ action: "add", payload: studentId });
+    // setOptimisticRecords({ action: "add", payload: studentId });
     toast.success(
       `${student?.name} marked as ${type === "absent" ? "absent" : "present"}`
     );
@@ -111,7 +114,7 @@ export default function AttendanceContextProvider({
   return (
     <AttendanceContext.Provider
       value={{
-        records: optimisticRecords,
+        records: data,
         handleMarkAs,
       }}
     >

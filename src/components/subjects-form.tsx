@@ -8,13 +8,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TSubjectValues, subjectSchema } from "@/lib/validation";
 import { useSubjectContext } from "@/hooks/useSubject";
+import { Action } from "@/lib/types";
 
 type SubjectsFormProps = {
+  action: Action;
   onFormSubmission: () => void;
 };
 
-export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
-  const { handleAddSubject } = useSubjectContext();
+export default function SubjectsForm({
+  onFormSubmission,
+  action,
+}: SubjectsFormProps) {
+  const { handleAddSubject, selectedSubject, handleEditSubject } =
+    useSubjectContext();
+
   const {
     register,
     trigger,
@@ -22,6 +29,14 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
     formState: { errors },
   } = useForm<TSubjectValues>({
     resolver: zodResolver(subjectSchema),
+    defaultValues:
+      action === "edit"
+        ? {
+            name: selectedSubject?.name,
+            start: selectedSubject?.start,
+            end: selectedSubject?.end,
+          }
+        : undefined,
   });
 
   return (
@@ -32,8 +47,12 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
         if (!result) return;
 
         const subjectData = getValues();
+        if (action === "add") {
+          await handleAddSubject(subjectData);
+        } else if (action === "edit") {
+          await handleEditSubject(selectedSubject!.id, subjectData);
+        }
 
-        await handleAddSubject(subjectData);
         onFormSubmission();
       }}
     >
@@ -73,7 +92,7 @@ export default function SubjectsForm({ onFormSubmission }: SubjectsFormProps) {
           </div>
         </div>
       </div>
-      <SubjectsFormBtn />
+      <SubjectsFormBtn action={action} />
     </form>
   );
 }
