@@ -15,12 +15,14 @@ import moment from "moment";
 import NoResultFound from "./no-result-found";
 import { TDay } from "@/types/record";
 import React from "react";
+import { Button } from "./ui/button";
 
 export default function WeeklyRecordTable() {
   const {
     records,
     handleNextWeek,
     handlePreviousWeek,
+    handleCurrentWeek,
     startOfWeek,
     endOfWeek,
   } = useAttendanceContext();
@@ -32,7 +34,14 @@ export default function WeeklyRecordTable() {
       {!records.length && <NoResultFound />}
       {records.length > 0 && (
         <>
-          <p className="text-center mb-5 font-semibold text-ccdi-blue flex justify-center gap-x-4 items-center">
+          <div className="relative text-center mb-5 font-semibold text-ccdi-blue flex justify-center gap-x-4 items-center">
+            <Button
+              size="sm"
+              className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-6"
+              onClick={() => handleCurrentWeek()}
+            >
+              Current Week
+            </Button>
             <AiOutlineLeft
               size={15}
               strokeWidth={70}
@@ -46,7 +55,7 @@ export default function WeeklyRecordTable() {
               onClick={() => handleNextWeek()}
               className="cursor-pointer"
             />
-          </p>
+          </div>
           <div className="h-[550px] overflow-auto">
             <Table>
               <TableHeader>

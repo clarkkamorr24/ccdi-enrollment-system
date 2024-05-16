@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AiFillFileAdd } from "react-icons/ai";
+import { AiFillFileAdd, AiOutlineUserAdd } from "react-icons/ai";
 import { flushSync } from "react-dom";
 import SubjectsForm from "./subjects-form";
 import StudentsForm from "./students-form";
@@ -30,17 +30,15 @@ export default function Modal({
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       {action === "add" && (
-        <DialogTrigger asChild>
-          <Button
-            className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-8"
-            size="sm"
-            variant="destructive"
-          >
-            <AiFillFileAdd size={20} />
-          </Button>
-        </DialogTrigger>
+        <>
+          {modalType === "student" && (
+            <DialogTriggerContent modalType="student" />
+          )}
+          {modalType === "subject" && (
+            <DialogTriggerContent modalType="subject" />
+          )}
+        </>
       )}
-
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-ccdi-blue">
@@ -71,9 +69,22 @@ export default function Modal({
             }}
           />
         )}
-
-        {/* here */}
       </DialogContent>
     </Dialog>
+  );
+}
+
+function DialogTriggerContent({ modalType }: { modalType: Classification }) {
+  return (
+    <DialogTrigger asChild>
+      <Button
+        className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-8"
+        size="sm"
+        variant="destructive"
+      >
+        {modalType === "subject" && <AiFillFileAdd size={20} />}
+        {modalType === "student" && <AiOutlineUserAdd size={20} />}
+      </Button>
+    </DialogTrigger>
   );
 }

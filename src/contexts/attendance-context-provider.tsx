@@ -23,6 +23,7 @@ type AttendanceContextProviderProps = {
 type TAttendanceContext = {
   handlePreviousWeek: () => void;
   handleNextWeek: () => void;
+  handleCurrentWeek: () => void;
   startOfWeek: Moment;
   endOfWeek: Moment;
   records: TRecord[];
@@ -48,12 +49,17 @@ const useCurrentDate = () => {
     setCurrentDate((date) => date.clone().add(1, "weeks"));
   }, []);
 
+  const handleCurrentWeek = useCallback(() => {
+    setCurrentDate(moment());
+  }, []);
+
   return {
     currentDate,
     startOfWeek,
     endOfWeek,
     handlePreviousWeek,
     handleNextWeek,
+    handleCurrentWeek,
   };
 };
 
@@ -98,8 +104,13 @@ export default function AttendanceContextProvider({
   data,
   children,
 }: AttendanceContextProviderProps) {
-  const { startOfWeek, endOfWeek, handlePreviousWeek, handleNextWeek } =
-    useCurrentDate();
+  const {
+    startOfWeek,
+    endOfWeek,
+    handlePreviousWeek,
+    handleNextWeek,
+    handleCurrentWeek,
+  } = useCurrentDate();
   const records = useFormattedRecords(data, startOfWeek, endOfWeek);
 
   const handleMarkAs = async (
@@ -138,6 +149,7 @@ export default function AttendanceContextProvider({
         handleMarkAs,
         handlePreviousWeek,
         handleNextWeek,
+        handleCurrentWeek,
         startOfWeek,
         endOfWeek,
       }}

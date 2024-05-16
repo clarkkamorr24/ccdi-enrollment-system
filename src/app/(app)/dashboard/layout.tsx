@@ -8,7 +8,6 @@ import AttendanceContextProvider from "@/contexts/attendance-context-provider";
 import StudentContextProvider from "@/contexts/student-context-provider";
 import SubjectContextProvider from "@/contexts/subject-context-provider";
 import { checkAuth } from "@/lib/server-utils";
-// import { getRecords } from "@/utils/getRecords";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;

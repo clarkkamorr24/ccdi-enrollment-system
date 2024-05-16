@@ -3,7 +3,6 @@ import H1 from "@/components/h1";
 import SubjectsTable from "@/components/subject";
 import WeeklyRecordTable from "@/components/weekly-record";
 import { checkAuth } from "@/lib/server-utils";
-import Modal from "@/components/modal";
 import IconWithModal from "@/components/icon-with-modal";
 
 export default async function Page({ params }: { params: { route: string } }) {
