@@ -1,10 +1,14 @@
-import { getStudents, getSubjects } from "@/actions/action";
+import {
+  getAttendanceRecord,
+  getStudents,
+  getSubjects,
+} from "@/actions/action";
 import SideItemsList from "@/components/side-items-list";
 import AttendanceContextProvider from "@/contexts/attendance-context-provider";
 import StudentContextProvider from "@/contexts/student-context-provider";
 import SubjectContextProvider from "@/contexts/subject-context-provider";
 import { checkAuth } from "@/lib/server-utils";
-import { getRecords } from "@/utils/getRecords";
+// import { getRecords } from "@/utils/getRecords";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -14,7 +18,8 @@ export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
   const session = await checkAuth();
-  const records = await getRecords();
+  const records = await getAttendanceRecord(session.user.id);
+  // const records = await getRecords();
   const subjects = await getSubjects(session.user.id);
   const students = await getStudents(session.user.id);
 

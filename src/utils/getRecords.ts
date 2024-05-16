@@ -50,13 +50,13 @@ export async function getRecords() {
 
   const formattedRecords: TRecord[] = records.map((record) => ({
     name: record.name,
-    monday: record.monday ?? null,
-    tuesday: record.tuesday ?? null,
-    wednesday: record.wednesday ?? null,
-    thursday: record.thursday ?? null,
-    friday: record.friday ?? null,
-    saturday: record.saturday ?? null,
-    sunday: record.sunday ?? null,
+    monday: record.monday ?? undefined,
+    tuesday: record.tuesday ?? undefined,
+    wednesday: record.wednesday ?? undefined,
+    thursday: record.thursday ?? undefined,
+    friday: record.friday ?? undefined,
+    saturday: record.saturday ?? undefined,
+    sunday: record.sunday ?? undefined,
   }));
 
   return formattedRecords;

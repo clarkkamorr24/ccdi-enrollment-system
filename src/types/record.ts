@@ -1,10 +1,16 @@
+import { Moment } from "moment";
+
+export type TDay = {
+  present: boolean | undefined;
+  date: Moment;
+};
 export type TRecord = {
   name: string;
-  monday: boolean | null;
-  tuesday: boolean | null;
-  wednesday: boolean | null;
-  thursday: boolean | null;
-  friday: boolean | null;
-  saturday: boolean | null;
-  sunday: boolean | null;
+  monday: TDay;
+  tuesday: TDay;
+  wednesday: TDay;
+  thursday: TDay;
+  friday: TDay;
+  saturday: TDay;
+  sunday: TDay;
 };
