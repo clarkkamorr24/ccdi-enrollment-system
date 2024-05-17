@@ -18,16 +18,25 @@ export default function ConfirmationModal({
   setIsOpen,
   type,
 }: ConfirmationModalProps) {
-  const { handleDeleteSubject } = useSubjectContext();
-  const { handleDeleteStudent } = useStudentContext();
-  const { selectedStudentId } = useStudentContext();
-  const { selectedSubjectId } = useSubjectContext();
+  const { handleDeleteSubject, selectedSubjectId, selectedSubject } =
+    useSubjectContext();
+  const { handleDeleteStudent, selectedStudentId, selectedStudent } =
+    useStudentContext();
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-sm mx-auto space-y-4">
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-ccdi-blue text-sm text-center">
-            Are you sure you want to proceed?
+          <DialogTitle className="text-ccdi-blue text-sm text-center px-4">
+            {type === "student" && (
+              <p className="text-sm text-ccdi-blue">
+                {selectedStudent?.name} will be removed from the weekly record
+                as well.
+              </p>
+            )}
+            Are you sure you want to delete{" "}
+            {type === "subject" && selectedSubject?.name}
+            {"?"}
           </DialogTitle>
           <DialogDescription className="text-center space-x-2">
             <DialogClose asChild>

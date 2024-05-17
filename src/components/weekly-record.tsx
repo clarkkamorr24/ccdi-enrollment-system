@@ -14,8 +14,11 @@ import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import moment from "moment";
 import NoResultFound from "./no-result-found";
 import { TDay } from "@/types/record";
-import React from "react";
+import React, { useRef } from "react";
 import { Button } from "./ui/button";
+import { useReactToPrint } from "react-to-print";
+import ComponentToPrint from "./component-to-print";
+import { AiOutlinePrinter } from "react-icons/ai";
 
 export default function WeeklyRecordTable() {
   const {
@@ -29,15 +32,31 @@ export default function WeeklyRecordTable() {
   const startOfWeekFormatted = startOfWeek.format("MMMM D, YYYY");
   const endOfWeekFormatted = endOfWeek.format("MMMM D, YYYY");
 
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
+      <div className="hidden">
+        <ComponentToPrint ref={componentRef} />
+      </div>
       {!records.length && <NoResultFound />}
       {records.length > 0 && (
         <>
-          <div className="relative text-center mb-5 font-semibold text-ccdi-blue flex justify-center gap-x-4 items-center">
+          <div className="relative text-center mb-5 font-semibold text-ccdi-blue flex justify-center md:gap-x-4 gap-x-2 items-center">
             <Button
               size="sm"
-              className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-6"
+              className="absolute left-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-6 flex items-center gap-x-1"
+              onClick={() => handlePrint()}
+            >
+              Print
+              <AiOutlinePrinter size={15} />
+            </Button>
+            <Button
+              size="sm"
+              className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-6 md:text-xs text-[10px]"
               onClick={() => handleCurrentWeek()}
             >
               Current Week
