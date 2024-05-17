@@ -11,23 +11,153 @@ const userData: Prisma.UserCreateInput = {
       {
         name: "Abiera, Marc",
         idNumber: "0012",
+        attendance: {
+          create: [
+            {
+              present: true,
+              createdAt: new Date("2024-05-13"),
+              updatedAt: new Date("2024-05-13"),
+            },
+            {
+              present: false,
+              createdAt: new Date("2024-05-14"),
+              updatedAt: new Date("2024-05-14"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-15"),
+              updatedAt: new Date("2024-05-15"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-16"),
+              updatedAt: new Date("2024-05-16"),
+            },
+          ],
+        },
       },
       {
         name: "Abion, Ledylyn",
         idNumber: "0014",
+        attendance: {
+          create: [
+            {
+              present: true,
+              createdAt: new Date("2024-05-13"),
+              updatedAt: new Date("2024-05-13"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-14"),
+              updatedAt: new Date("2024-05-14"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-15"),
+              updatedAt: new Date("2024-05-15"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-16"),
+              updatedAt: new Date("2024-05-16"),
+            },
+          ],
+        },
       },
       {
         name: "Benitez, John Daniel",
         idNumber: "00013",
+        attendance: {
+          create: [
+            {
+              present: true,
+              createdAt: new Date("2024-05-13"),
+              updatedAt: new Date("2024-05-13"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-14"),
+              updatedAt: new Date("2024-05-14"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-15"),
+              updatedAt: new Date("2024-05-15"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-16"),
+              updatedAt: new Date("2024-05-16"),
+            },
+          ],
+        },
+      },
+      {
+        name: "Botiquin, Efraim",
+        idNumber: "00013",
+        attendance: {
+          create: [
+            {
+              present: true,
+              createdAt: new Date("2024-05-13"),
+              updatedAt: new Date("2024-05-13"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-14"),
+              updatedAt: new Date("2024-05-14"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-15"),
+              updatedAt: new Date("2024-05-15"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-16"),
+              updatedAt: new Date("2024-05-16"),
+            },
+          ],
+        },
+      },
+      {
+        name: "Deguzman, Erron Zymon",
+        idNumber: "00013",
+        attendance: {
+          create: [
+            {
+              present: true,
+              createdAt: new Date("2024-05-13"),
+              updatedAt: new Date("2024-05-13"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-14"),
+              updatedAt: new Date("2024-05-14"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-15"),
+              updatedAt: new Date("2024-05-15"),
+            },
+            {
+              present: true,
+              createdAt: new Date("2024-05-16"),
+              updatedAt: new Date("2024-05-16"),
+            },
+          ],
+        },
       },
     ],
   },
   subjects: {
     create: [
       {
-        name: "English",
+        name: "Programming C++",
         start: "09:00",
         end: "10:00",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ],
   },
