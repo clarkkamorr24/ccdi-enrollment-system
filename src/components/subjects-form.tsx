@@ -59,7 +59,7 @@ export default function SubjectsForm({
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Subject Name</Label>
-          <Input id="name" {...register("name")} />
+          <Input id="name" {...register("name")} autoComplete="off" />
           {errors.name && (
             <p className="text-red-500 text-xs">{errors.name.message}</p>
           )}

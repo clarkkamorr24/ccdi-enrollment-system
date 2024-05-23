@@ -96,7 +96,7 @@ const useFormattedRecords = (
     };
 
     return {
-      name: attendance.name,
+      name: attendance.firstName,
       monday: getAttendanceForDay(1),
       tuesday: getAttendanceForDay(2),
       wednesday: getAttendanceForDay(3),
@@ -174,7 +174,7 @@ export default function AttendanceContextProvider({
         );
       }
 
-      toast.success(`${student?.name} marked as ${type}`);
+      toast.success(`${student?.firstName} marked as ${type}`);
     } catch (error) {
       console.error("Error marking attendance:", error);
       toast.error("Failed to mark attendance");

@@ -20,6 +20,7 @@ import {
 import { useStudentContext } from "@/hooks/useStudent";
 import NoResultFound from "./no-result-found";
 import Action from "./action";
+import ComponentTooltip from "./component-tooltip";
 
 export default function AttendanceTable() {
   const { students } = useStudentContext();
@@ -40,6 +41,9 @@ export default function AttendanceTable() {
                 <TableHead className="w-[250px] font-bold text-white">
                   Name
                 </TableHead>
+                <TableHead className="w-[200px] font-bold text-white">
+                  Strand/Semester
+                </TableHead>
                 <TableHead className="font-bold text-white pl-5">
                   Marked as
                 </TableHead>
@@ -49,69 +53,60 @@ export default function AttendanceTable() {
               {students.map((student) => (
                 <TableRow key={student.id}>
                   <TableCell>{student.idNumber}</TableCell>
-                  <TableCell>{student.name}</TableCell>
+                  <TableCell>
+                    <span className="capitalize">{student.lastName}</span>,{" "}
+                    <span className="capitalize">{student.firstName}</span>{" "}
+                    <span className="capitalize">{student.middleName}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="uppercase mr-1">{student.strand}</span>/
+                    <span className="capitalize ml-1">
+                      {student.semester === "first" ? "1st" : "2nd"}
+                    </span>
+                  </TableCell>
                   <TableCell className="flex gap-x-2 justify-between">
                     <div className="flex">
                       {/* present */}
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <AttendanceButton
-                              type="present"
-                              onClick={async () =>
-                                startTransition(async () => {
-                                  await handleMarkAs(student.id, "present");
-                                })
-                              }
-                            >
-                              <span className="ml-2">🙋‍♂️</span>
-                            </AttendanceButton>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-black/70">
-                            <p className="text-[10px]">Present</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <ComponentTooltip type="present">
+                        <AttendanceButton
+                          type="present"
+                          onClick={async () =>
+                            startTransition(async () => {
+                              await handleMarkAs(student.id, "present");
+                            })
+                          }
+                        >
+                          <span className="ml-2">🙋‍♂️</span>
+                        </AttendanceButton>
+                      </ComponentTooltip>
+
                       {/* absent */}
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <AttendanceButton
-                              type="absent"
-                              onClick={async () =>
-                                startTransition(async () => {
-                                  await handleMarkAs(student.id, "absent");
-                                })
-                              }
-                            >
-                              <span className="ml-2">🤦‍♂️</span>
-                            </AttendanceButton>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-black/70">
-                            <p className="text-[10px]">Absent</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <ComponentTooltip type="absent">
+                        <AttendanceButton
+                          type="absent"
+                          onClick={async () =>
+                            startTransition(async () => {
+                              await handleMarkAs(student.id, "absent");
+                            })
+                          }
+                        >
+                          <span className="ml-2">🤦‍♂️</span>
+                        </AttendanceButton>
+                      </ComponentTooltip>
+
                       {/* late */}
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <AttendanceButton
-                              type="late"
-                              onClick={async () =>
-                                startTransition(async () => {
-                                  await handleMarkAs(student.id, "late");
-                                })
-                              }
-                            >
-                              <span className="ml-2">🏃</span>
-                            </AttendanceButton>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-black/70">
-                            <p className="text-[10px]">Late</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <ComponentTooltip type="late">
+                        <AttendanceButton
+                          type="late"
+                          onClick={async () =>
+                            startTransition(async () => {
+                              await handleMarkAs(student.id, "late");
+                            })
+                          }
+                        >
+                          <span className="ml-2">🏃</span>
+                        </AttendanceButton>
+                      </ComponentTooltip>
                     </div>
                     <Action type="student" id={student.id} />
                   </TableCell>

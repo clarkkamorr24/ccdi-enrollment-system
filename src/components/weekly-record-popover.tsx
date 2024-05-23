@@ -4,21 +4,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { Status } from "@/types/status";
 import moment from "moment";
 import { useState } from "react";
 import { TDay } from "@/types/record";
 import { useAttendanceContext } from "@/hooks/useAttendance";
 import { getDate } from "@/utils/getDate";
+import ComponentSelect from "./component-select";
+import { statusItems } from "@/utils/status";
 
 type WeeklyRecordPopoverProps = {
   attendance: TDay;
@@ -49,22 +41,13 @@ export default function WeeklyRecordPopover({
               {moment(date).format("dddd, MMMM Do YYYY")}
             </h5>
           </div>
-          <Select
+          <ComponentSelect
             defaultValue={status}
-            onValueChange={(e: Status) => setIsPresent(e)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Status</SelectLabel>
-                <SelectItem value="present">Present</SelectItem>
-                <SelectItem value="absent">Absent</SelectItem>
-                <SelectItem value="late">Late</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            onChange={(e: any) => setIsPresent(e)}
+            label="Status"
+            placeholder="Select Status"
+            items={statusItems}
+          />
           <Button
             size="sm"
             className="h-9"

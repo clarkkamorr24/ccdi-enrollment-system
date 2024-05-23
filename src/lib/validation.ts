@@ -30,7 +30,6 @@ export type TSubjectValues = z.infer<typeof subjectSchema>;
 const isNumber = (value: string) => /^\d+$/.test(value);
 
 export const studentSchema = z.object({
-  name: z.string().min(1, "Student name should not be empty").max(50),
   idNumber: z
     .string()
     .min(1, "Student ID should not be empty")
@@ -38,6 +37,15 @@ export const studentSchema = z.object({
     .refine(isNumber, {
       message: "Student ID must be a number",
     }),
+  firstName: z.string().min(1, "First name should not be empty").max(50),
+  middleName: z.string(),
+  lastName: z.string().min(1, "Last name should not be empty").max(50),
+  strand: z.string({
+    required_error: "Please select a strand",
+  }),
+  semester: z.string({
+    required_error: "You need to select a semester.",
+  }),
 });
 
 export type TStudentValues = z.infer<typeof studentSchema>;
