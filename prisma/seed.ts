@@ -14,22 +14,22 @@ const userData: Prisma.UserCreateInput = {
         attendance: {
           create: [
             {
-              present: true,
+              status: "late",
               createdAt: new Date("2024-05-13"),
               updatedAt: new Date("2024-05-13"),
             },
             {
-              present: false,
+              status: "present",
               createdAt: new Date("2024-05-14"),
               updatedAt: new Date("2024-05-14"),
             },
             {
-              present: true,
+              status: "absent",
               createdAt: new Date("2024-05-15"),
               updatedAt: new Date("2024-05-15"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-16"),
               updatedAt: new Date("2024-05-16"),
             },
@@ -42,22 +42,22 @@ const userData: Prisma.UserCreateInput = {
         attendance: {
           create: [
             {
-              present: true,
+              status: "late",
               createdAt: new Date("2024-05-13"),
               updatedAt: new Date("2024-05-13"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-14"),
               updatedAt: new Date("2024-05-14"),
             },
             {
-              present: true,
+              status: "absent",
               createdAt: new Date("2024-05-15"),
               updatedAt: new Date("2024-05-15"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-16"),
               updatedAt: new Date("2024-05-16"),
             },
@@ -70,22 +70,22 @@ const userData: Prisma.UserCreateInput = {
         attendance: {
           create: [
             {
-              present: true,
+              status: "late",
               createdAt: new Date("2024-05-13"),
               updatedAt: new Date("2024-05-13"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-14"),
               updatedAt: new Date("2024-05-14"),
             },
             {
-              present: true,
+              status: "absent",
               createdAt: new Date("2024-05-15"),
               updatedAt: new Date("2024-05-15"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-16"),
               updatedAt: new Date("2024-05-16"),
             },
@@ -98,22 +98,22 @@ const userData: Prisma.UserCreateInput = {
         attendance: {
           create: [
             {
-              present: true,
+              status: "late",
               createdAt: new Date("2024-05-13"),
               updatedAt: new Date("2024-05-13"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-14"),
               updatedAt: new Date("2024-05-14"),
             },
             {
-              present: true,
+              status: "absent",
               createdAt: new Date("2024-05-15"),
               updatedAt: new Date("2024-05-15"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-16"),
               updatedAt: new Date("2024-05-16"),
             },
@@ -126,22 +126,22 @@ const userData: Prisma.UserCreateInput = {
         attendance: {
           create: [
             {
-              present: true,
+              status: "late",
               createdAt: new Date("2024-05-13"),
               updatedAt: new Date("2024-05-13"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-14"),
               updatedAt: new Date("2024-05-14"),
             },
             {
-              present: true,
+              status: "absent",
               createdAt: new Date("2024-05-15"),
               updatedAt: new Date("2024-05-15"),
             },
             {
-              present: true,
+              status: "present",
               createdAt: new Date("2024-05-16"),
               updatedAt: new Date("2024-05-16"),
             },

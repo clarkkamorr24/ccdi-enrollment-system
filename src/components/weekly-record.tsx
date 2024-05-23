@@ -19,6 +19,7 @@ import { Button } from "./ui/button";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./component-to-print";
 import { AiOutlinePrinter } from "react-icons/ai";
+import WeeklyRecordPopover from "./weekly-record-popover";
 
 export default function WeeklyRecordTable() {
   const {
@@ -82,12 +83,12 @@ export default function WeeklyRecordTable() {
                   <TableHead className="text-white flex-1 flex justify-center items-center text-center">
                     Name
                   </TableHead>
-                  {/* {console.log("records", records)} */}
 
                   {Object.entries(records[0])
                     .filter(([day]) => day !== "name")
                     .map(([day, dayAttendance]) => {
                       const attendance = dayAttendance as TDay;
+
                       const weekText = attendance.date.format("ddd");
                       const dayText = attendance.date.format("DD");
 
@@ -127,27 +128,38 @@ export default function WeeklyRecordTable() {
                       .slice(1)
                       .map(([day, dayAttendance]) => {
                         const attendance = dayAttendance as TDay;
-                        const isSame = attendance.date.isSameOrAfter(
+                        const isSameOrAfter = attendance.date.isSameOrAfter(
                           moment().format()
                         );
 
                         return (
-                          <TableCell
+                          <WeeklyRecordPopover
                             key={day}
-                            className="font-medium text-xs flex justify-center items-center flex-1"
+                            attendance={attendance}
+                            onClick={
+                              isSameOrAfter
+                                ? (e) => e.preventDefault()
+                                : undefined
+                            }
                           >
-                            {attendance.present === undefined ? (
-                              <p className="text-slate-500">
-                                {isSame ? "TBD" : "No record"}
-                              </p>
-                            ) : attendance.present ? (
-                              <span className="text-green-500 ">
-                                {"Present"}
-                              </span>
-                            ) : (
-                              <span className="text-ccdi-red ">{"Absent"}</span>
-                            )}
-                          </TableCell>
+                            <TableCell className="font-medium text-xs flex justify-center items-center flex-1 cursor-pointer hover:bg-gray-200">
+                              {attendance.status === undefined ? (
+                                <p className="text-slate-500">
+                                  {isSameOrAfter ? "TBD" : "No record"}
+                                </p>
+                              ) : attendance.status === "present" ? (
+                                <span className="text-green-500 ">
+                                  {"Present"}
+                                </span>
+                              ) : attendance.status === "absent" ? (
+                                <span className="text-ccdi-red ">
+                                  {"Absent"}
+                                </span>
+                              ) : (
+                                <span className="text-bg-black ">{"Late"}</span>
+                              )}
+                            </TableCell>
+                          </WeeklyRecordPopover>
                         );
                       })}
                   </TableRow>

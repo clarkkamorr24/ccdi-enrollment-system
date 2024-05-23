@@ -18,7 +18,6 @@ export default async function DashboardLayout({
 }: DashboardLayoutProps) {
   const session = await checkAuth();
   const records = await getAttendanceRecord(session.user.id);
-  // const records = await getRecords();
   const subjects = await getSubjects(session.user.id);
   const students = await getStudents(session.user.id);
 

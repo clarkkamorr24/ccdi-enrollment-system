@@ -12,6 +12,8 @@ import { getFixedDate } from "@/utils/momentUtils";
 import { createContext, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { Attendance, Student } from "@prisma/client";
+import { Status } from "@/types/status";
+import { getTodayDate } from "@/utils/getTodayDate";
 
 type AttendanceContextProviderProps = {
   data: (Student & {
@@ -27,9 +29,12 @@ type TAttendanceContext = {
   startOfWeek: Moment;
   endOfWeek: Moment;
   records: TRecord[];
-  handleMarkAs: (
+  handleMarkAs: (studentId: string, type: Status) => Promise<void>;
+  handleUpdateAs: (
     studentId: string,
-    type: "present" | "absent"
+    attendanceId: string | undefined,
+    date: string,
+    type: Status | undefined
   ) => Promise<void>;
 };
 
@@ -79,11 +84,14 @@ const useFormattedRecords = (
 
     const getAttendanceForDay = (day: number) => {
       const attendanceForDay = currentWeekAttendances.find(
-        (item) => getFixedDate(item.createdAt).day() === day
+        (item) => getFixedDate(item.createdAt).isoWeekday() === day
       );
+
       return {
-        present: attendanceForDay?.present ?? undefined,
-        date: startOfWeek.clone().day(day),
+        status: attendanceForDay?.status ?? undefined,
+        date: startOfWeek.clone().isoWeekday(day),
+        studentId: attendance.id,
+        attendanceId: attendanceForDay?.id ?? undefined,
       };
     };
 
@@ -112,11 +120,29 @@ export default function AttendanceContextProvider({
     handleCurrentWeek,
   } = useCurrentDate();
   const records = useFormattedRecords(data, startOfWeek, endOfWeek);
+  const todayDate = getTodayDate();
 
-  const handleMarkAs = async (
+  const handleUpdateAs = async (
     studentId: string,
-    type: "present" | "absent"
+    attendanceId: string | undefined,
+    date: string,
+    type: Status | undefined
   ) => {
+    try {
+      if (attendanceId) {
+        await updateAttendance(attendanceId, type as Status, date);
+      } else {
+        await addAttendance(studentId, type as Status, date);
+      }
+
+      toast.success("Status updated successfully");
+    } catch (error) {
+      console.error("Error marking attendance:", error);
+      toast.error("Failed to mark attendance");
+    }
+  };
+
+  const handleMarkAs = async (studentId: string, type: Status) => {
     try {
       const attendance = await geAttendanceByStudentId(studentId);
       const student = await getStudentById(studentId);
@@ -129,13 +155,26 @@ export default function AttendanceContextProvider({
       if (existingAttendance) {
         await updateAttendance(
           existingAttendance.id,
-          type === "absent" ? false : true
+          type === "present"
+            ? "present"
+            : type === "absent"
+            ? "absent"
+            : "late",
+          todayDate
         );
-        toast.success(`${student?.name} marked as ${type}`);
       } else {
-        await addAttendance(studentId, type === "absent" ? false : true);
-        toast.success(`${student?.name} marked as ${type}`);
+        await addAttendance(
+          studentId,
+          type === "present"
+            ? "present"
+            : type === "absent"
+            ? "absent"
+            : "late",
+          todayDate
+        );
       }
+
+      toast.success(`${student?.name} marked as ${type}`);
     } catch (error) {
       console.error("Error marking attendance:", error);
       toast.error("Failed to mark attendance");
@@ -147,6 +186,7 @@ export default function AttendanceContextProvider({
       value={{
         records,
         handleMarkAs,
+        handleUpdateAs,
         handlePreviousWeek,
         handleNextWeek,
         handleCurrentWeek,

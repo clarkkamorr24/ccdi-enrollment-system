@@ -79,14 +79,16 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
                           key={day}
                           className="font-medium text-xs flex justify-center items-center flex-1"
                         >
-                          {attendance.present === undefined ? (
+                          {attendance.status === undefined ? (
                             <p className="text-slate-500">
                               {isSame ? "TBD" : "No record"}
                             </p>
-                          ) : attendance.present ? (
+                          ) : attendance.status === "present" ? (
                             <span className="text-green-500 ">{"Present"}</span>
-                          ) : (
+                          ) : attendance.status === "absent" ? (
                             <span className="text-ccdi-red ">{"Absent"}</span>
+                          ) : (
+                            <span className="text-bg-black ">{"Late"}</span>
                           )}
                         </TableCell>
                       );

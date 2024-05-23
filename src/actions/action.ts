@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { getTodayDate } from "@/utils/getTodayDate";
 import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
@@ -16,6 +15,7 @@ import {
 import bcrypt from "bcryptjs";
 import { Attendance, Prisma, Student, Subject } from "@prisma/client";
 import { checkAuth, getSubjectById } from "@/lib/server-utils";
+import { Status } from "@/types/status";
 
 //login
 export async function logIn(prevState: unknown, formData: unknown) {
@@ -263,16 +263,15 @@ export async function deleteStudent(studentId: unknown) {
 
 export async function addAttendance(
   studentId: Student["id"],
-  isPresent: boolean
+  status: Status,
+  date: string
 ) {
-  const todayDate = getTodayDate();
-
   try {
     await prisma.attendance.create({
       data: {
-        present: isPresent,
-        createdAt: todayDate,
-        updatedAt: todayDate,
+        status: status,
+        createdAt: date,
+        updatedAt: date,
         student: {
           connect: {
             id: studentId,
@@ -292,18 +291,17 @@ export async function addAttendance(
 
 export async function updateAttendance(
   attendanceId: Attendance["id"],
-  isPresent: boolean
+  status: Status,
+  date: string
 ) {
-  const todayDate = getTodayDate();
-
   try {
     await prisma.attendance.update({
       where: {
         id: attendanceId,
       },
       data: {
-        updatedAt: todayDate,
-        present: isPresent,
+        updatedAt: date,
+        status: status,
       },
     });
   } catch (error) {

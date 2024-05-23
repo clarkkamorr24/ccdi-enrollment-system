@@ -1,8 +1,11 @@
 import { Moment } from "moment";
+import { Status } from "./status";
 
 export type TDay = {
-  present: boolean | undefined;
+  status: Status | undefined;
   date: Moment;
+  studentId: string;
+  attendanceId: string | undefined;
 };
 export type TRecord = {
   name: string;

@@ -37,10 +37,10 @@ export default function AttendanceTable() {
                 <TableHead className="w-[200px] font-bold text-white">
                   Student ID
                 </TableHead>
-                <TableHead className="w-[300px] font-bold text-white">
+                <TableHead className="w-[250px] font-bold text-white">
                   Name
                 </TableHead>
-                <TableHead className="font-bold text-white">
+                <TableHead className="font-bold text-white pl-5">
                   Marked as
                 </TableHead>
               </TableRow>
@@ -52,6 +52,7 @@ export default function AttendanceTable() {
                   <TableCell>{student.name}</TableCell>
                   <TableCell className="flex gap-x-2 justify-between">
                     <div className="flex">
+                      {/* present */}
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -71,7 +72,7 @@ export default function AttendanceTable() {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-
+                      {/* absent */}
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -88,6 +89,26 @@ export default function AttendanceTable() {
                           </TooltipTrigger>
                           <TooltipContent className="bg-black/70">
                             <p className="text-[10px]">Absent</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      {/* late */}
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <AttendanceButton
+                              type="late"
+                              onClick={async () =>
+                                startTransition(async () => {
+                                  await handleMarkAs(student.id, "late");
+                                })
+                              }
+                            >
+                              <span className="ml-2">🏃</span>
+                            </AttendanceButton>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-black/70">
+                            <p className="text-[10px]">Late</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>

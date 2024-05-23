@@ -1,8 +1,8 @@
 import moment from "moment";
 import { z } from "zod";
 
-export const subjectIdSchema = z.string().cuid();
-export const studentIdSchema = z.string().cuid();
+export const subjectIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
+export const studentIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
 
 export const authSchema = z.object({
   username: z.string().max(100),

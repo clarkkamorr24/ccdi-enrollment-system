@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String    @id @default(cuid())
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
   username       String    @unique
   students       Student[]
   subjects       Subject[]
@@ -21,9 +21,9 @@ model User {
 }
 
 model Student {
-  id         String       @id @default(cuid())
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
   user       User         @relation(fields: [userId], references: [id])
-  userId     String
+  userId     String       @db.ObjectId
   name       String
   idNumber   String
   attendance Attendance[]
@@ -32,18 +32,24 @@ model Student {
 }
 
 model Attendance {
-  id        String   @id @default(cuid())
-  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String
-  present   Boolean  @default(false)
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String           @db.ObjectId
+  status    AttendanceStatus @default(present)
+  updatedAt DateTime         @updatedAt
+  createdAt DateTime         @default(now())
+}
+
+enum AttendanceStatus {
+  present
+  absent
+  late
 }
 
 model Subject {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String   @db.ObjectId
   name      String
   start     String
   end       String
