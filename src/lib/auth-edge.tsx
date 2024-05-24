@@ -16,13 +16,19 @@ export const nextAuthEdgeConfig = {
       if (user) {
         // on signin
         token.userId = user.id;
-        token.email = user.username;
+        token.email = user.email;
+        token.firstName = user.firstName;
+        token.middleName = user.middleName;
+        token.lastName = user.lastName;
       }
       return token;
     },
 
     session: ({ session, token }) => {
       session.user.id = token.userId as string;
+      session.user.firstName = token.firstName as string;
+      session.user.middleName = token.middleName as string;
+      session.user.lastName = token.lastName as string;
 
       return session;
     },

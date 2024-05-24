@@ -1,8 +1,8 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { authSchema } from "./validation";
-import { getUserByUsername } from "./server-utils";
+import { loginSchema } from "./validation";
+import { getUserByEmail } from "./server-utils";
 import { nextAuthEdgeConfig } from "./auth-edge";
 
 const config = {
@@ -11,14 +11,15 @@ const config = {
     Credentials({
       async authorize(credentials) {
         //validation
-        const validatedFormData = authSchema.safeParse(credentials);
+        const validatedFormData = loginSchema.safeParse(credentials);
+
         if (!validatedFormData.success) {
           return null;
         }
         //extract values
-        const { username, password } = validatedFormData.data;
+        const { email, password } = validatedFormData.data;
 
-        const user = await getUserByUsername(username);
+        const user = await getUserByEmail(email);
 
         if (!user) {
           console.log("user not found");

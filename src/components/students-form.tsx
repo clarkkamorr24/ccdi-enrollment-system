@@ -9,7 +9,6 @@ import { TStudentValues, studentSchema } from "@/lib/validation";
 import StudentsFormBtn from "./students-form-btn";
 import { useStudentContext } from "@/hooks/useStudent";
 import { Action } from "@/lib/types";
-import { Checkbox } from "./ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import ComponentSelect from "./component-select";
 import { strand } from "@/utils/strand";

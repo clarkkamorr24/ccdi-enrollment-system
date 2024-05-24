@@ -27,10 +27,10 @@ export async function getSubjectById(subjectId: Subject["id"]) {
   return subject;
 }
 
-export async function getUserByUsername(username: User["username"]) {
+export async function getUserByEmail(email: User["email"]) {
   const user = await prisma.user.findUnique({
     where: {
-      username,
+      email,
     },
   });
 

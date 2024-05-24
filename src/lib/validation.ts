@@ -4,12 +4,32 @@ import { z } from "zod";
 export const subjectIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
 export const studentIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
 
-export const authSchema = z.object({
-  username: z.string().max(100),
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
   password: z.string().max(100),
 });
 
-export type TAuth = z.infer<typeof authSchema>;
+export const registerSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .max(50),
+  middleName: z.string(),
+  lastName: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .max(50),
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
+  password: z.string().max(100),
+});
+
+export type TAuth = z.infer<typeof registerSchema>;
 
 export const subjectSchema = z
   .object({

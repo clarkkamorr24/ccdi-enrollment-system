@@ -32,7 +32,7 @@ type TAttendanceContext = {
   handleMarkAs: (studentId: string, type: Status) => Promise<void>;
   handleUpdateAs: (
     studentId: string,
-    attendanceId: string | undefined,
+    attendanceId: string,
     date: string,
     type: Status | undefined
   ) => Promise<void>;
@@ -124,7 +124,7 @@ export default function AttendanceContextProvider({
 
   const handleUpdateAs = async (
     studentId: string,
-    attendanceId: string | undefined,
+    attendanceId: string,
     date: string,
     type: Status | undefined
   ) => {

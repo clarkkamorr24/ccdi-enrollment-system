@@ -6,7 +6,8 @@ import { checkAuth } from "@/lib/server-utils";
 
 export default async function DashboardHeader() {
   const session = await checkAuth();
-  const { email } = session.user;
+
+  const { email, firstName, middleName, lastName } = session.user;
 
   return (
     <header className="flex flex-col items-center justify-center w-full h-[70px] bg-ccdi-blue/90 text-white ">
@@ -15,7 +16,7 @@ export default async function DashboardHeader() {
           <LogoWhite />
         </Link>
         <div className="flex gap-x-1 items-center capitalize">
-          Hello, {email}
+          Hello, {firstName} {middleName} {lastName}
           <span className="animate-wave mr-4">👋</span>
           <LogoutBtn />
         </div>

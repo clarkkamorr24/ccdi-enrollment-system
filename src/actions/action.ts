@@ -6,7 +6,7 @@ import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
 import {
-  authSchema,
+  registerSchema,
   studentIdSchema,
   studentSchema,
   subjectIdSchema,
@@ -62,22 +62,26 @@ export async function register(prevState: unknown, formData: unknown) {
   const formDataObject = Object.fromEntries(formData.entries());
 
   //validation
-  const validatedFormData = authSchema.safeParse(formDataObject);
+  const validatedFormData = registerSchema.safeParse(formDataObject);
   if (!validatedFormData.success) {
     return {
       message: "Invalid form data.",
     };
   }
 
-  const { username, password } = validatedFormData.data;
-  console.log("username", username);
+  const { email, password, firstName, middleName, lastName } =
+    validatedFormData.data;
+  console.log("email", email);
   console.log("password", password);
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     await prisma.user.create({
       data: {
-        username,
+        firstName,
+        middleName,
+        lastName,
+        email,
         hashedPassword,
       },
     });
@@ -85,7 +89,7 @@ export async function register(prevState: unknown, formData: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return {
-          message: "Username already exists.",
+          message: "Email already exists.",
         };
       }
     }
@@ -129,7 +133,6 @@ export async function getStudents(userId: string) {
 
 export async function addStudent(student: unknown) {
   await sleep(1000);
-  console.log("student", student);
   // authentication check
   const session = await checkAuth();
 
@@ -171,7 +174,7 @@ export async function addStudent(student: unknown) {
 
 export async function updateStudent(id: string, newStudent: unknown) {
   await sleep(1000);
-  console.log("student", newStudent);
+
   // authentication check
   const session = await checkAuth();
 

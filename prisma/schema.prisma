@@ -12,7 +12,10 @@ datasource db {
 
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  username       String    @unique
+  email          String    @unique
+  firstName      String
+  middleName     String
+  lastName       String
   students       Student[]
   subjects       Subject[]
   hashedPassword String

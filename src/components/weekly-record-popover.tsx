@@ -54,7 +54,7 @@ export default function WeeklyRecordPopover({
             onClick={async () => {
               await handleUpdateAs(
                 studentId,
-                attendanceId,
+                attendanceId as string,
                 dateFormatted,
                 isPresent
               );
