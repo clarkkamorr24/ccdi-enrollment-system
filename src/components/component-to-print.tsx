@@ -62,7 +62,7 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
             <TableBody>
               {records.map((record) => (
                 <TableRow key={record.name} className="flex">
-                  <TableCell className="font-medium text-xs flex justify-center items-center flex-1">
+                  <TableCell className="font-medium text-xs flex justify-center items-center flex-1 text-center">
                     {record.name}
                   </TableCell>
 

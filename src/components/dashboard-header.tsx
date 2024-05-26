@@ -7,7 +7,7 @@ import { checkAuth } from "@/lib/server-utils";
 export default async function DashboardHeader() {
   const session = await checkAuth();
 
-  const { email, firstName, middleName, lastName } = session.user;
+  const { firstName, middleName, lastName } = session.user;
 
   return (
     <header className="flex flex-col items-center justify-center w-full h-[70px] bg-ccdi-blue/90 text-white ">

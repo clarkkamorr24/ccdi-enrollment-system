@@ -96,7 +96,10 @@ const useFormattedRecords = (
     };
 
     return {
-      name: attendance.firstName,
+      name:
+        attendance.lastName +
+        `, ${attendance.firstName}` +
+        ` ${attendance.middleName}`,
       monday: getAttendanceForDay(1),
       tuesday: getAttendanceForDay(2),
       wednesday: getAttendanceForDay(3),

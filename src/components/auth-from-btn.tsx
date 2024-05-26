@@ -3,7 +3,7 @@ import { useFormStatus } from "react-dom";
 import { AiOutlineLoading } from "react-icons/ai";
 
 type AuthFormtnProps = {
-  type: "login" | "register";
+  type: "login" | "register" | "password";
 };
 
 export default function AuthFormBtn({ type }: AuthFormtnProps) {
@@ -26,6 +26,7 @@ export default function AuthFormBtn({ type }: AuthFormtnProps) {
         ) : (
           "Login"
         ))}
+      {type === "password" && (pending ? <>{"Submitting ..."}</> : "Submit")}
     </Button>
   );
 }

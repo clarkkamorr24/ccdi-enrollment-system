@@ -3,6 +3,13 @@ import { z } from "zod";
 
 export const subjectIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
 export const studentIdSchema = z.string().regex(/^[0-9a-f]{24}$/);
+// export const emailSchema = z.string().email("This is not a valid email.");
+export const resetPasswordSchema = z.object({
+  password: z.string().min(1, { message: "Required field." }),
+  confirmPassword: z.string().min(1, { message: "Required field." }),
+});
+
+export type TResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export const loginSchema = z.object({
   email: z
@@ -28,6 +35,8 @@ export const registerSchema = z.object({
     .email("This is not a valid email."),
   password: z.string().max(100),
 });
+
+export const emailSchema = registerSchema.shape.email;
 
 export type TAuth = z.infer<typeof registerSchema>;
 

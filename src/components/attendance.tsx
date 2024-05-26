@@ -11,12 +11,6 @@ import {
 import { useAttendanceContext } from "@/hooks/useAttendance";
 import AttendanceButton from "./attendance-button";
 import { useTransition } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 import { useStudentContext } from "@/hooks/useStudent";
 import NoResultFound from "./no-result-found";
 import Action from "./action";

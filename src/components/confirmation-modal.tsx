@@ -30,8 +30,9 @@ export default function ConfirmationModal({
           <DialogTitle className="text-ccdi-blue text-sm text-center px-4">
             {type === "student" && (
               <p className="text-sm text-ccdi-blue">
-                {selectedStudent?.name} will be removed from the weekly record
-                as well.
+                {selectedStudent?.firstName} {selectedStudent?.middleName}{" "}
+                {selectedStudent?.lastName} will be removed from the weekly
+                record as well.
               </p>
             )}
             Are you sure you want to delete{" "}

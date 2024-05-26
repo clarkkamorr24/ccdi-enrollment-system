@@ -7,6 +7,7 @@ import { logIn, register } from "@/actions/action";
 import AuthFormBtn from "./auth-from-btn";
 import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import Link from "next/link";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -89,9 +90,12 @@ export default function AuthForm({ type }: AuthFormProps) {
       </div>
 
       {type === "login" && (
-        <p className="float-right mt-4 text-ccdi-blue cursor-pointer">
+        <Link
+          href="/forgot-password"
+          className="float-right mt-4 text-ccdi-blue cursor-pointer"
+        >
           Forgot your password?
-        </p>
+        </Link>
       )}
       <AuthFormBtn type={type} />
     </form>

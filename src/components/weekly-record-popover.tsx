@@ -61,7 +61,7 @@ export default function WeeklyRecordPopover({
               setIsOpen(false);
             }}
           >
-            Submit
+            Update
           </Button>
         </div>
       </PopoverContent>

@@ -5,8 +5,13 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth-no-edge";
 import { sleep } from "@/lib/utils";
+import crypto from "crypto";
+import sgMail from "@sendgrid/mail";
+
 import {
+  emailSchema,
   registerSchema,
+  resetPasswordSchema,
   studentIdSchema,
   studentSchema,
   subjectIdSchema,
@@ -14,7 +19,7 @@ import {
 } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 import { Attendance, Prisma, Student, Subject } from "@prisma/client";
-import { checkAuth, getSubjectById } from "@/lib/server-utils";
+import { checkAuth, getSubjectById, verifyToken } from "@/lib/server-utils";
 import { Status } from "@/types/status";
 
 //login
@@ -110,6 +115,162 @@ export async function logout() {
   });
 }
 
+export async function forgotPassword(prevState: unknown, formData: unknown) {
+  await sleep(1000);
+
+  if (!(formData instanceof FormData)) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  //convert formData to plain object
+  const formDataObject = Object.fromEntries(formData.entries());
+  //validation
+  const validatedFormData = emailSchema.safeParse(formDataObject.email);
+
+  if (!validatedFormData.success) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  const { data: email } = validatedFormData;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return {
+      message: "Email not found",
+    };
+  }
+
+  if (user.resetToken) {
+    return {
+      message: "You have already requested to reset your password",
+    };
+  }
+
+  const resetToken = crypto.randomBytes(20).toString("hex");
+  const passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  const passwordResetExpires = new Date(Date.now() + 3600000);
+
+  user.resetToken = passwordResetToken;
+  user.resetTokenExpiry = passwordResetExpires;
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      resetToken: passwordResetToken,
+      resetTokenExpiry: passwordResetExpires,
+    },
+  });
+
+  const resetUrl = `localhost:3000/reset-password/${resetToken}`;
+
+  const bodyEmail = `Hi ${user.firstName} ${user.middleName} ${user.lastName},
+
+  You have requested to reset your password. Click the link below to reset your password.
+
+  ${resetUrl}
+
+  If you did not request to reset your password, please ignore this email.
+  `;
+
+  const msg = {
+    to: email,
+    from: "legazpiccdi@gmail.com",
+    subject: "Requesting to reset your password",
+    text: bodyEmail,
+  };
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
+
+  try {
+    await sgMail.send(msg);
+
+    return {
+      success: "Password reset email sent. Kindly check your email",
+    };
+  } catch (error) {
+    user.resetToken = null;
+    user.resetTokenExpiry = null;
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
+
+    return {
+      message: "Could not send password reset email",
+    };
+  }
+}
+
+export async function resetPassword(formData: unknown, id: string) {
+  await sleep(1000);
+
+  if (!(formData instanceof FormData)) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  //convert formData to plain object
+  const formDataObject = Object.fromEntries(formData.entries());
+
+  if (formDataObject.password !== formDataObject.confirmPassword) {
+    return {
+      message: "Password does not match",
+    };
+  }
+
+  const validatedFormData = resetPasswordSchema.safeParse(formDataObject);
+  if (!validatedFormData.success) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  const { password } = validatedFormData.data;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        hashedPassword: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
+    return {
+      success: "Password reset successful",
+    };
+  } catch (error) {
+    return {
+      message: "Could not reset password",
+    };
+  }
+}
+
 //students
 export async function getStudentById(id: string) {
   const student = await prisma.student.findUnique({
@@ -125,6 +286,9 @@ export async function getStudents(userId: string) {
   const students = await prisma.student.findMany({
     where: {
       userId: userId,
+    },
+    orderBy: {
+      lastName: "asc",
     },
   });
 
@@ -334,6 +498,9 @@ export async function getAttendanceRecord(userId: string) {
     },
     include: {
       attendance: true,
+    },
+    orderBy: {
+      lastName: "asc",
     },
   });
 
