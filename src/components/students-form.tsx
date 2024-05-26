@@ -22,7 +22,7 @@ export default function StudentsForm({
   onFormSubmission,
   action,
 }: StudentsFormProps) {
-  const { handleAddStudent, handleEditStudent, selectedStudent } =
+  const { error, handleAddStudent, handleEditStudent, selectedStudent } =
     useStudentContext();
 
   const {
@@ -45,7 +45,6 @@ export default function StudentsForm({
           }
         : undefined,
   });
-
   return (
     <form
       className="flex flex-col"
@@ -61,12 +60,15 @@ export default function StudentsForm({
           await handleEditStudent(selectedStudent!.id, studentData);
         }
 
-        onFormSubmission();
+        if (error) {
+          onFormSubmission();
+        }
       }}
     >
       <div className="space-y-3">
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <div className="space-y-1">
-          <Label htmlFor="idNumber">Student ID</Label>
+          <Label htmlFor="idNumber">ID Number</Label>
           <Input id="idNumber" {...register("idNumber")} />
           {errors.idNumber && (
             <p className="text-red-500 text-xs">{errors.idNumber.message}</p>

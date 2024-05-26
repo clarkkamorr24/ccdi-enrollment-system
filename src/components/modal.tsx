@@ -13,6 +13,7 @@ import { flushSync } from "react-dom";
 import SubjectsForm from "./subjects-form";
 import StudentsForm from "./students-form";
 import { Action, Classification } from "@/lib/types";
+import { useStudentContext } from "@/hooks/useStudent";
 
 type ModalProps = {
   setIsModalOpen: (isModalOpen: boolean) => void;
@@ -27,8 +28,17 @@ export default function Modal({
   isModalOpen,
   setIsModalOpen,
 }: ModalProps) {
+  const { setError } = useStudentContext();
+
+  const handleClose = (isModalOpen: boolean) => {
+    setIsModalOpen(isModalOpen);
+    if (!isModalOpen) {
+      setError(null); // Reset the error state
+    }
+  };
+
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       {action === "add" && (
         <>
           {modalType === "student" && (

@@ -13,6 +13,8 @@ type StudentContextProviderProps = {
 
 type TStudentContext = {
   students: Student[];
+  error: string | null;
+  setError: (error: string | null) => void;
   selectedStudentId: Student["id"] | null;
   selectedStudent: Student | undefined;
   handleChangeSelectStudentId: (id: Student["id"]) => void;
@@ -28,19 +30,8 @@ export default function StudentContextProvider({
   children,
 }: StudentContextProviderProps) {
   //states
-  // const [optimisticStudents, setOptimisticStudents] = useOptimistic(
-  //   data,
-  //   (state, { action, payload }) => {
-  //     switch (action) {
-  //       case "add":
-  //         return [...state, { ...payload, id: Math.random().toString() }];
-  //       case "delete":
-  //         return state.filter((student) => student.id !== payload);
-  //       default:
-  //         return state;
-  //     }
-  //   }
-  // );
+  const [error, setError] = useState<string | null>(null);
+
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
     null
   );
@@ -49,19 +40,20 @@ export default function StudentContextProvider({
     (student) => student.id === selectedStudentId
   );
 
+  //event handlers
   const handleAddStudent = async (student: StudentType) => {
-    // setOptimisticStudents({ action: "add", payload: student });
     const error = await addStudent(student);
     if (error) {
+      setError(error.message);
       console.log("error", error);
       return;
     }
 
+    setError(null);
     toast.success("Student added successfully");
   };
 
   const handleEditStudent = async (id: Student["id"], student: StudentType) => {
-    // setOptimisticStudents({ action: "edit", payload: student });
     const error = await updateStudent(id, student);
     if (error) {
       console.log("error", error);
@@ -72,7 +64,6 @@ export default function StudentContextProvider({
   };
 
   const handleDeleteStudent = async (id: Student["id"]) => {
-    // setOptimisticStudents({ action: "delete", payload: id });
     const error = await deleteStudent(id);
     if (error) {
       console.log("error", error);
@@ -91,6 +82,8 @@ export default function StudentContextProvider({
     <StudentContext.Provider
       value={{
         students: data,
+        error,
+        setError,
         selectedStudent,
         selectedStudentId,
         handleAddStudent,

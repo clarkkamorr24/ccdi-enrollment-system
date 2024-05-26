@@ -324,7 +324,7 @@ export async function addStudent(student: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return {
-          message: "Student ID already exists.",
+          message: "ID Number already exists.",
         };
       }
     }
