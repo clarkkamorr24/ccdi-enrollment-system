@@ -178,20 +178,16 @@ export async function forgotPassword(prevState: unknown, formData: unknown) {
 
   const resetUrl = `localhost:3000/reset-password/${resetToken}`;
 
-  const bodyEmail = `Hi ${user.firstName} ${user.middleName} ${user.lastName},
-
-  You have requested to reset your password. Click the link below to reset your password.
-
-  ${resetUrl}
-
-  If you did not request to reset your password, please ignore this email.
-  `;
-
   const msg = {
     to: email,
     from: "legazpiccdi@gmail.com",
-    subject: "Requesting to reset your password",
-    text: bodyEmail,
+    subject: "PASSWORD RESET LINK",
+    html: `
+      <p>Hi ${user.firstName} ${user.middleName} ${user.lastName},</p>
+      <p>You have requested to reset your password. Click or copy the link below to reset your password.</p>
+      <p><a href="${resetUrl}">${resetUrl}</a></p>
+      <p>If you did not request to reset your password, please ignore this email.</p>
+    `,
   };
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
@@ -361,7 +357,7 @@ export async function updateStudent(id: string, newStudent: unknown) {
 
   if (student.userId !== session.user.id) {
     return {
-      message: "Not authorized to delete this student.",
+      message: "Not authorized to update this student.",
     };
   }
   //database mutation
@@ -373,6 +369,13 @@ export async function updateStudent(id: string, newStudent: unknown) {
       data: validatedStudent.data,
     });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {
+          message: "ID Number already exists.",
+        };
+      }
+    }
     return {
       message: "Could not update student.",
     };

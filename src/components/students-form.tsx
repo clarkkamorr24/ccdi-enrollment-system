@@ -55,13 +55,18 @@ export default function StudentsForm({
         const studentData = getValues();
 
         if (action === "add") {
-          await handleAddStudent(studentData);
+          const response = await handleAddStudent(studentData);
+          if (!response) {
+            onFormSubmission();
+          }
         } else if (action === "edit") {
-          await handleEditStudent(selectedStudent!.id, studentData);
-        }
-
-        if (error) {
-          onFormSubmission();
+          const response = await handleEditStudent(
+            selectedStudent!.id,
+            studentData
+          );
+          if (!response) {
+            onFormSubmission();
+          }
         }
       }}
     >

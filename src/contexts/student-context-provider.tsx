@@ -18,8 +18,21 @@ type TStudentContext = {
   selectedStudentId: Student["id"] | null;
   selectedStudent: Student | undefined;
   handleChangeSelectStudentId: (id: Student["id"]) => void;
-  handleAddStudent: (student: StudentType) => Promise<void>;
-  handleEditStudent: (id: Student["id"], student: StudentType) => Promise<void>;
+  handleAddStudent: (student: StudentType) => Promise<
+    | {
+        message: string;
+      }
+    | undefined
+  >;
+  handleEditStudent: (
+    id: Student["id"],
+    student: StudentType
+  ) => Promise<
+    | {
+        message: string;
+      }
+    | undefined
+  >;
   handleDeleteStudent: (id: Student["id"]) => Promise<void>;
 };
 
@@ -45,8 +58,7 @@ export default function StudentContextProvider({
     const error = await addStudent(student);
     if (error) {
       setError(error.message);
-      console.log("error", error);
-      return;
+      return error;
     }
 
     setError(null);
@@ -56,8 +68,8 @@ export default function StudentContextProvider({
   const handleEditStudent = async (id: Student["id"], student: StudentType) => {
     const error = await updateStudent(id, student);
     if (error) {
-      console.log("error", error);
-      return;
+      setError(error.message);
+      return error;
     }
 
     toast.success("Student updated successfully");

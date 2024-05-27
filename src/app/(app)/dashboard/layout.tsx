@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   const students = await getStudents(session.user.id);
 
   return (
-    <main className="grid md:grid-cols-3 md:grid-rows-1 md:h-[700px]">
+    <main className="grid md:grid-cols-4 md:grid-rows-1 md:h-[700px]">
       <div className="md:col-span-1 md:col-start-1 border-r border-gray-500/10">
         <div className="md:w-full md:h-full p-2">
           <SideItemsList />

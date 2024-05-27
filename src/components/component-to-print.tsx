@@ -41,7 +41,7 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
                   .map(([day, dayAttendance]) => {
                     const attendance = dayAttendance as TDay;
                     const weekText = attendance.date.format("ddd");
-                    const dayText = attendance.date.format("DD");
+                    const dayText = attendance.date.format("D");
 
                     return (
                       <TableHead

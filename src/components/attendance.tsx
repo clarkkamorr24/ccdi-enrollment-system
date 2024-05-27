@@ -29,13 +29,13 @@ export default function AttendanceTable() {
           <Table>
             <TableHeader>
               <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
-                <TableHead className="w-[200px] font-bold text-white">
+                <TableHead className="w-[150px] font-bold text-white">
                   Student ID
                 </TableHead>
                 <TableHead className="w-[250px] font-bold text-white">
                   Name
                 </TableHead>
-                <TableHead className="w-[200px] font-bold text-white">
+                <TableHead className="w-[150px] font-bold text-white">
                   Strand/Semester
                 </TableHead>
                 <TableHead className="font-bold text-white pl-5">
@@ -53,9 +53,9 @@ export default function AttendanceTable() {
                     <span className="capitalize">{student.middleName}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="uppercase mr-1">{student.strand}</span>/
-                    <span className="capitalize ml-1">
-                      {student.semester === "first" ? "1st" : "2nd"}
+                    <span className="uppercase flex gap-x-2">
+                      <p className="w-[40px]">{student.strand}</p>-
+                      <p>{student.semester === "first" ? "1st" : "2nd"}</p>
                     </span>
                   </TableCell>
                   <TableCell className="flex gap-x-2 justify-between">
