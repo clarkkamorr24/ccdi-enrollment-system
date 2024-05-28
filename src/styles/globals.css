@@ -8,3 +8,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   height: 1.2rem;
   width: 1.2rem;
 }
+
+*::-webkit-scrollbar {
+  width: 7px;
+  cursor: pointer !important;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: rgb(1 0 92 / 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(1 0 92 / 0.8);
+  border-radius: 10px;
+  cursor: pointer !important;
+}

@@ -32,7 +32,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
         if (!result) return;
 
         const filterData = getValues();
-        await handleFilterAttendance(filterData.strand, filterData.semester);
+        handleFilterAttendance(filterData.strand, filterData.semester);
 
         onFormSubmission();
       }}

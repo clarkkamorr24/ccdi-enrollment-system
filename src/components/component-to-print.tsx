@@ -28,7 +28,7 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
       <div className="relative text-center font-semibold text-ccdi-blue flex justify-center md:gap-x-4 gap-x-2 items-center">
         {startOfWeekFormatted} to {endOfWeekFormatted}
       </div>
-      <div className="h-[550px] overflow-auto mt-8">
+      <div className="overflow-auto mt-8">
         {records.length > 0 && (
           <Table>
             <TableHeader>

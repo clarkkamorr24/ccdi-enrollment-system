@@ -22,7 +22,7 @@ export default function SubjectsTable() {
       {subjects.length > 0 && (
         <Table>
           <TableHeader>
-            <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
+            <TableRow className="bg-ccdi-blue rounded-md hover:bg-ccdi-blue">
               <TableHead className="w-[350px] font-bold text-white">
                 Subject
               </TableHead>

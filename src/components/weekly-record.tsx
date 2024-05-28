@@ -69,60 +69,24 @@ export default function WeeklyRecordTable() {
             className="cursor-pointer"
           />
         </div>
-        <CurrentWeek />
-        {!records.length && <NoResultFound />}
+
+        {!records.length && (
+          <div className="mt-5">
+            <NoResultFound />
+          </div>
+        )}
         {records.length > 0 && (
-          <div className="h-[550px] overflow-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-ccdi-blue/80 rounded-sm hover:bg-ccdi-blue/80 flex py-4">
-                  <TableHead className="text-white flex-1 flex justify-center items-center text-center py-6">
-                    <h1 className="w-[150px]">Name</h1>
-                  </TableHead>
+          <>
+            <CurrentWeek />
+            <div className="h-[550px] overflow-auto">
+              <Table>
+                <TableHeader className="sticky top-0 z-50 bg-ccdi-blue">
+                  <TableRow className="rounded-sm flex py-4 hover:bg-ccdi-blue">
+                    <TableHead className="text-white flex-1 flex justify-center items-center text-center py-6">
+                      <h1 className="w-[150px]">Name</h1>
+                    </TableHead>
 
-                  {Object.entries(records[0])
-                    .filter(
-                      ([day]) =>
-                        day !== "name" && day !== "strand" && day !== "semester"
-                    )
-                    .map(([day, dayAttendance]) => {
-                      const attendance = dayAttendance as TDay;
-                      const weekText = attendance.date.format("ddd");
-                      const dayText = attendance.date.format("D");
-
-                      return (
-                        <TableHead
-                          key={day}
-                          className="flex flex-1 justify-center py-6"
-                        >
-                          <div className="flex flex-col justify-center items-center gap-y-2">
-                            <span className="text-white uppercase text-xs">
-                              {weekText}
-                            </span>
-                            <span
-                              className={cn(
-                                "text-white py-1.5",
-                                attendance.date.format("L") ===
-                                  moment().format("L") &&
-                                  "text-ccdi-blue bg-white rounded-full flex justify-center items-center px-2 text-xs"
-                              )}
-                            >
-                              {dayText}
-                            </span>
-                          </div>
-                        </TableHead>
-                      );
-                    })}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {records.map((record) => (
-                  <TableRow key={record.name} className="flex">
-                    <TableCell className="font-medium text-xs flex justify-center items-center flex-1 text-center">
-                      <h1 className=" w-[150px]">{record.name}</h1>
-                    </TableCell>
-
-                    {Object.entries(record)
+                    {Object.entries(records[0])
                       .filter(
                         ([day]) =>
                           day !== "name" &&
@@ -131,45 +95,92 @@ export default function WeeklyRecordTable() {
                       )
                       .map(([day, dayAttendance]) => {
                         const attendance = dayAttendance as TDay;
-                        const isSameOrAfter = attendance.date.isSameOrAfter(
-                          moment().format()
-                        );
+                        const weekText = attendance.date.format("ddd");
+                        const dayText = attendance.date.format("D");
 
                         return (
-                          <WeeklyRecordPopover
+                          <TableHead
                             key={day}
-                            attendance={attendance}
-                            onClick={
-                              isSameOrAfter
-                                ? (e) => e.preventDefault()
-                                : undefined
-                            }
+                            className="flex flex-1 justify-center py-6"
                           >
-                            <TableCell className="font-medium text-xs flex justify-center items-center flex-1 cursor-pointer hover:bg-gray-200">
-                              {attendance.status === undefined ? (
-                                <p className="text-slate-500">
-                                  {isSameOrAfter ? "TBD" : "No record"}
-                                </p>
-                              ) : attendance.status === "present" ? (
-                                <span className="text-green-500 ">
-                                  {"Present"}
-                                </span>
-                              ) : attendance.status === "absent" ? (
-                                <span className="text-ccdi-red ">
-                                  {"Absent"}
-                                </span>
-                              ) : (
-                                <span className="text-bg-black ">{"Late"}</span>
-                              )}
-                            </TableCell>
-                          </WeeklyRecordPopover>
+                            <div className="flex flex-col justify-center items-center gap-y-2">
+                              <span className="text-white uppercase text-xs">
+                                {weekText}
+                              </span>
+                              <span
+                                className={cn(
+                                  "text-white py-1.5",
+                                  attendance.date.format("L") ===
+                                    moment().format("L") &&
+                                    "text-ccdi-blue bg-white rounded-full flex justify-center items-center px-2 text-xs"
+                                )}
+                              >
+                                {dayText}
+                              </span>
+                            </div>
+                          </TableHead>
                         );
                       })}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {records.map((record) => (
+                    <TableRow key={record.name} className="flex">
+                      <TableCell className="font-medium text-xs flex justify-center items-center flex-1">
+                        <h1 className=" w-[150px]">{record.name}</h1>
+                      </TableCell>
+
+                      {Object.entries(record)
+                        .filter(
+                          ([day]) =>
+                            day !== "name" &&
+                            day !== "strand" &&
+                            day !== "semester"
+                        )
+                        .map(([day, dayAttendance]) => {
+                          const attendance = dayAttendance as TDay;
+                          const isSameOrAfter = attendance.date.isSameOrAfter(
+                            moment().format()
+                          );
+
+                          return (
+                            <WeeklyRecordPopover
+                              key={day}
+                              attendance={attendance}
+                              onClick={
+                                isSameOrAfter
+                                  ? (e) => e.preventDefault()
+                                  : undefined
+                              }
+                            >
+                              <TableCell className="font-medium text-xs flex justify-center items-center flex-1 cursor-pointer hover:bg-gray-200">
+                                {attendance.status === undefined ? (
+                                  <p className="text-slate-500">
+                                    {isSameOrAfter ? "TBD" : "No record"}
+                                  </p>
+                                ) : attendance.status === "present" ? (
+                                  <span className="text-green-500 ">
+                                    {"Present"}
+                                  </span>
+                                ) : attendance.status === "absent" ? (
+                                  <span className="text-ccdi-red ">
+                                    {"Absent"}
+                                  </span>
+                                ) : (
+                                  <span className="text-bg-black ">
+                                    {"Late"}
+                                  </span>
+                                )}
+                              </TableCell>
+                            </WeeklyRecordPopover>
+                          );
+                        })}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
       </>
     </>

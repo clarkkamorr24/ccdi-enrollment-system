@@ -11,7 +11,7 @@ export default async function AppLayout({
   return (
     <>
       <ClientSessionProvider>
-        <div className="bg-white/90 min-h-screen">
+        <div className="bg-white/90 min-h-screen overflow-hidden">
           <DashboardHeader />
           <DateHeader />
           <div className="max-w-[1050px] mx-auto bg-white mt-2 rounded-md">

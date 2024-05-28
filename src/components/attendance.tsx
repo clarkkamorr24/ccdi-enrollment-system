@@ -27,8 +27,8 @@ export default function AttendanceTable() {
       {students.length > 0 && (
         <div className="h-[600px] overflow-auto">
           <Table>
-            <TableHeader>
-              <TableRow className="bg-ccdi-blue/80 rounded-md hover:bg-ccdi-blue/80">
+            <TableHeader className="sticky top-0 z-50 bg-ccdi-blue ">
+              <TableRow className="hover:bg-ccdi-blue">
                 <TableHead className="w-[150px] font-bold text-white">
                   Student ID
                 </TableHead>
