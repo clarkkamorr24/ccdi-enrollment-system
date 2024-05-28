@@ -12,6 +12,7 @@ import { Action } from "@/lib/types";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import ComponentSelect from "./component-select";
 import { strand } from "@/utils/strand";
+import { semesters } from "@/utils/semester";
 
 type StudentsFormProps = {
   action: Action;
@@ -130,22 +131,19 @@ export default function StudentsForm({
                   onValueChange={field.onChange}
                   className="flex"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="first"
-                      id="first"
-                      className="w-7 h-7"
-                    />
-                    <Label htmlFor="first">1st</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="second"
-                      id="second"
-                      className="w-7 h-7"
-                    />
-                    <Label htmlFor="second">2nd</Label>
-                  </div>
+                  {semesters.map((semester) => (
+                    <div
+                      className="flex items-center space-x-2"
+                      key={semester.id}
+                    >
+                      <RadioGroupItem
+                        value={semester.value}
+                        id={semester.value}
+                        className="w-7 h-7"
+                      />
+                      <Label htmlFor="first">{semester.label}</Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               )}
             />

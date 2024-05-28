@@ -9,6 +9,8 @@ export type TDay = {
 };
 export type TRecord = {
   name: string;
+  strand: string;
+  semester: string;
   monday: TDay;
   tuesday: TDay;
   wednesday: TDay;

@@ -1,115 +1,25 @@
 "use client";
 
+import { createContext, useState, useCallback, useMemo } from "react";
 import {
   addAttendance,
   geAttendanceByStudentId,
   getStudentById,
   updateAttendance,
 } from "@/actions/action";
-import moment, { Moment } from "moment";
-import { TRecord } from "@/types/record";
-import { getFixedDate } from "@/utils/momentUtils";
-import { createContext, useState, useCallback } from "react";
+import moment from "moment";
 import { toast } from "sonner";
-import { Attendance, Student } from "@prisma/client";
+import { getFixedDate } from "@/utils/momentUtils";
 import { Status } from "@/types/status";
 import { getTodayDate } from "@/utils/getTodayDate";
-
-type AttendanceContextProviderProps = {
-  data: (Student & {
-    attendance: Attendance[];
-  })[];
-  children: React.ReactNode;
-};
-
-type TAttendanceContext = {
-  handlePreviousWeek: () => void;
-  handleNextWeek: () => void;
-  handleCurrentWeek: () => void;
-  startOfWeek: Moment;
-  endOfWeek: Moment;
-  records: TRecord[];
-  handleMarkAs: (studentId: string, type: Status) => Promise<void>;
-  handleUpdateAs: (
-    studentId: string,
-    attendanceId: string,
-    date: string,
-    type: Status | undefined
-  ) => Promise<void>;
-};
+import { formatRecords } from "@/utils/attendanceUtils";
+import {
+  AttendanceContextProviderProps,
+  TAttendanceContext,
+} from "@/types/attendanceContext";
+import { useCurrentDate } from "@/hooks/useCurrentDate";
 
 export const AttendanceContext = createContext<TAttendanceContext | null>(null);
-
-const useCurrentDate = () => {
-  const [currentDate, setCurrentDate] = useState(moment());
-
-  const startOfWeek = currentDate.clone().startOf("isoWeek");
-  const endOfWeek = currentDate.clone().endOf("isoWeek");
-
-  const handlePreviousWeek = useCallback(() => {
-    setCurrentDate((date) => date.clone().subtract(1, "weeks"));
-  }, []);
-
-  const handleNextWeek = useCallback(() => {
-    setCurrentDate((date) => date.clone().add(1, "weeks"));
-  }, []);
-
-  const handleCurrentWeek = useCallback(() => {
-    setCurrentDate(moment());
-  }, []);
-
-  return {
-    currentDate,
-    startOfWeek,
-    endOfWeek,
-    handlePreviousWeek,
-    handleNextWeek,
-    handleCurrentWeek,
-  };
-};
-
-const useFormattedRecords = (
-  data: AttendanceContextProviderProps["data"],
-  startOfWeek: Moment,
-  endOfWeek: Moment
-): TRecord[] => {
-  return data.map((attendance) => {
-    const currentWeekAttendances = attendance.attendance.filter((item) => {
-      const date = getFixedDate(item.createdAt);
-      return (
-        date.isSameOrAfter(startOfWeek, "day") &&
-        date.isSameOrBefore(endOfWeek, "day")
-      );
-    });
-
-    const getAttendanceForDay = (day: number) => {
-      const attendanceForDay = currentWeekAttendances.find(
-        (item) => getFixedDate(item.createdAt).isoWeekday() === day
-      );
-
-      return {
-        status: attendanceForDay?.status ?? undefined,
-        date: startOfWeek.clone().isoWeekday(day),
-        studentId: attendance.id,
-        attendanceId: attendanceForDay?.id ?? undefined,
-      };
-    };
-
-    return {
-      name:
-        attendance.lastName +
-        `, ${attendance.firstName}` +
-        ` ${attendance.middleName}`,
-      monday: getAttendanceForDay(1),
-      tuesday: getAttendanceForDay(2),
-      wednesday: getAttendanceForDay(3),
-      thursday: getAttendanceForDay(4),
-      friday: getAttendanceForDay(5),
-      saturday: getAttendanceForDay(6),
-      sunday: getAttendanceForDay(7),
-    };
-  });
-};
 
 export default function AttendanceContextProvider({
   data,
@@ -122,8 +32,34 @@ export default function AttendanceContextProvider({
     handleNextWeek,
     handleCurrentWeek,
   } = useCurrentDate();
-  const records = useFormattedRecords(data, startOfWeek, endOfWeek);
+
+  const records = formatRecords(data, startOfWeek, endOfWeek);
   const todayDate = getTodayDate();
+  const [selectedStrands, setSelectedStrands] = useState<string[]>([]);
+  const [selectedSemesters, setSelectedSemesters] = useState<string[]>([]);
+
+  const handleFilterAttendance = useCallback(
+    (strands: string[], semesters: string[]) => {
+      setSelectedStrands(strands);
+      setSelectedSemesters(semesters);
+    },
+    []
+  );
+
+  const filteredRecords = useMemo(() => {
+    if (selectedStrands.length === 0 && selectedSemesters.length === 0) {
+      return records;
+    }
+
+    return records.filter((record) => {
+      const strandMatches =
+        selectedStrands.length === 0 || selectedStrands.includes(record.strand);
+      const semesterMatches =
+        selectedSemesters.length === 0 ||
+        selectedSemesters.includes(record.semester);
+      return strandMatches && semesterMatches;
+    });
+  }, [records, selectedStrands, selectedSemesters]);
 
   const handleUpdateAs = async (
     studentId: string,
@@ -156,25 +92,9 @@ export default function AttendanceContextProvider({
       );
 
       if (existingAttendance) {
-        await updateAttendance(
-          existingAttendance.id,
-          type === "present"
-            ? "present"
-            : type === "absent"
-            ? "absent"
-            : "late",
-          todayDate
-        );
+        await updateAttendance(existingAttendance.id, type, todayDate);
       } else {
-        await addAttendance(
-          studentId,
-          type === "present"
-            ? "present"
-            : type === "absent"
-            ? "absent"
-            : "late",
-          todayDate
-        );
+        await addAttendance(studentId, type, todayDate);
       }
 
       toast.success(`${student?.firstName} marked as ${type}`);
@@ -187,7 +107,12 @@ export default function AttendanceContextProvider({
   return (
     <AttendanceContext.Provider
       value={{
-        records,
+        records: filteredRecords,
+        handleFilterAttendance,
+        selectedStrands,
+        setSelectedStrands,
+        selectedSemesters,
+        setSelectedSemesters,
         handleMarkAs,
         handleUpdateAs,
         handlePreviousWeek,

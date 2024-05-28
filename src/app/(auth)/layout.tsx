@@ -1,9 +1,7 @@
-import Logo from "@/components/logo";
-import AuthContextProvider from "@/contexts/auth-context-provider";
-import { auth } from "@/lib/auth-no-edge";
 import Link from "next/link";
+import Logo from "@/components/logo";
+import { auth } from "@/lib/auth-no-edge";
 import { redirect } from "next/navigation";
-import React from "react";
 import { Toaster } from "sonner";
 
 export default async function AuthLayout({
@@ -23,7 +21,7 @@ export default async function AuthLayout({
         <Link href="/">
           <Logo />
         </Link>
-        <AuthContextProvider>{children}</AuthContextProvider>
+        {children}
         <Toaster position="top-right" />
       </main>
     </div>

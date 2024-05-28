@@ -37,7 +37,10 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
                   Name
                 </TableHead>
                 {Object.entries(records[0])
-                  .filter(([day]) => day !== "name")
+                  .filter(
+                    ([day]) =>
+                      day !== "name" && day !== "strand" && day !== "semester"
+                  )
                   .map(([day, dayAttendance]) => {
                     const attendance = dayAttendance as TDay;
                     const weekText = attendance.date.format("ddd");
@@ -67,7 +70,10 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
                   </TableCell>
 
                   {Object.entries(record)
-                    .slice(1)
+                    .filter(
+                      ([day]) =>
+                        day !== "name" && day !== "strand" && day !== "semester"
+                    )
                     .map(([day, dayAttendance]) => {
                       const attendance = dayAttendance as TDay;
                       const isSame = attendance.date.isSameOrAfter(
