@@ -11,6 +11,7 @@ export default function AuthFormBtn({ type }: AuthFormtnProps) {
 
   return (
     <Button
+      size="icon"
       disabled={pending}
       className="w-full mt-5 bg-ccdi-blue disabled:bg-ccdi-blue"
     >

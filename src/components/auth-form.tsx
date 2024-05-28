@@ -49,7 +49,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             />
           </div>
           <div className="space-y-1 mt-2">
-            <Label htmlFor="middleName">Mildde Name (optional)</Label>
+            <Label htmlFor="middleName">Middle Name (optional)</Label>
             <Input id="middleName" type="text" name="middleName" />
           </div>
           <div className="space-y-1 mt-2">
@@ -77,6 +77,7 @@ export default function AuthForm({ type }: AuthFormProps) {
           type={isOpen ? "text" : "password"}
           name="password"
           required
+          minLength={5}
           maxLength={100}
         />
         <span onClick={() => setIsOpen(!isOpen)}>

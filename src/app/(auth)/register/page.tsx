@@ -6,7 +6,7 @@ import React from "react";
 export default function Page() {
   return (
     <main className="w-full max-w-sm mx-auto mt-5 px-2">
-      <H1 className="uppercase text-center font-semibold text-2xl">
+      <H1 className="uppercase text-center font-semibold text-xl">
         Registration form
       </H1>
       <AuthForm type="register" />

@@ -11,10 +11,14 @@ export default function Home() {
       </p>
       <div className="flex w-full justify-between mt-10 gap-x-10 px-5">
         <Link href="/register" className="w-full">
-          <Button className="w-full">Create Account</Button>
+          <Button className="w-full" size="icon">
+            Create Account
+          </Button>
         </Link>
         <Link href="/login" className="w-full">
-          <Button className="w-full">Sign In</Button>
+          <Button className="w-full" size="icon">
+            Sign In
+          </Button>
         </Link>
       </div>
     </>

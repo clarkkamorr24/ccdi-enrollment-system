@@ -78,6 +78,7 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
               type={isPasswordOpen ? "text" : "password"}
               name="password"
               required
+              min={5}
               maxLength={50}
             />
             <span onClick={() => setIsPasswordOpen(!isPasswordOpen)}>
