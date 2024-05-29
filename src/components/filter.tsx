@@ -10,9 +10,12 @@ import {
 import FilterForm from "./filter-form";
 import { useState } from "react";
 import { flushSync } from "react-dom";
+import { useAttendanceContext } from "@/hooks/useAttendance";
 
 export default function Filter() {
+  const { selectedSemesters, selectedStrands } = useAttendanceContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const filterLength = selectedSemesters.length + selectedStrands.length;
 
   return (
     <>
@@ -22,7 +25,7 @@ export default function Filter() {
             size="sm"
             className="absolute right-0 bg-ccdi-blue/80 hover:bg-ccdi-blue h-6 flex md:text-xs text-[10px] gap-x-1"
           >
-            Filter
+            Filter {filterLength > 0 && `(${filterLength})`}
             <AiFillFilter />
           </Button>
         </DialogTrigger>

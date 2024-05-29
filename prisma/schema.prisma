@@ -34,10 +34,12 @@ model Student {
   lastName   String
   strand     String
   semester   String
-  idNumber   String       @unique
+  idNumber   String
   attendance Attendance[]
   updatedAt  DateTime     @updatedAt
   createdAt  DateTime     @default(now())
+
+  @@unique([idNumber, userId])
 }
 
 model Attendance {

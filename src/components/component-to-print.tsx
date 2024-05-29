@@ -33,8 +33,8 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
           <Table>
             <TableHeader>
               <TableRow className="bg-ccdi-blue/80 rounded-sm hover:bg-ccdi-blue/80 flex py-4">
-                <TableHead className="text-white flex-1 flex justify-center items-center text-center">
-                  Name
+                <TableHead className="text-white flex-1 flex justify-center items-center text-center py-6">
+                  <h1 className="w-[150px]">Name</h1>
                 </TableHead>
                 {Object.entries(records[0])
                   .filter(
@@ -66,7 +66,7 @@ const ComponentToPrint = forwardRef<HTMLDivElement>((_, ref) => {
               {records.map((record) => (
                 <TableRow key={record.name} className="flex">
                   <TableCell className="font-medium text-xs flex justify-center items-center flex-1">
-                    {record.name}
+                    <h1 className=" w-[150px]">{record.name}</h1>
                   </TableCell>
 
                   {Object.entries(record)
