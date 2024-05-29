@@ -43,7 +43,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
           <div className="space-y-3 my-2" key={strand.id}>
             <div className="flex justify-between px-2 items-center">
               <label
-                htmlFor="terms"
+                htmlFor="strand"
                 className="text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {strand.label}
@@ -53,6 +53,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
                 name="strand"
                 render={({ field }) => (
                   <Checkbox
+                    name="strand"
                     checked={
                       Array.isArray(field.value)
                         ? field.value.includes(strand.value)
@@ -89,7 +90,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
           <div className="space-y-3 my-2" key={semester.id}>
             <div className="flex justify-between px-2">
               <label
-                htmlFor="terms"
+                htmlFor="semester"
                 className="text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tabular-nums"
               >
                 {semester.label}
@@ -99,6 +100,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
                 name="semester"
                 render={({ field }) => (
                   <Checkbox
+                    name="semester"
                     checked={
                       Array.isArray(field.value)
                         ? field.value.includes(semester.value)
