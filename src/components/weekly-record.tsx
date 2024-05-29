@@ -14,7 +14,7 @@ import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import moment from "moment";
 import NoResultFound from "./no-result-found";
 import { TDay } from "@/types/record";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Button } from "./ui/button";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./component-to-print";
@@ -30,7 +30,6 @@ export default function WeeklyRecordTable() {
     handlePreviousWeek,
     startOfWeek,
     endOfWeek,
-    isFiltering,
   } = useAttendanceContext();
   const startOfWeekFormatted = startOfWeek.format("MMMM D, YYYY");
   const endOfWeekFormatted = endOfWeek.format("MMMM D, YYYY");
@@ -46,25 +45,17 @@ export default function WeeklyRecordTable() {
         <ComponentToPrint ref={componentRef} />
       </div>
 
-      {isFiltering && (
-        <WeeeklyRecordFilterSection
-          handlePrint={handlePrint}
-          handlePreviousWeek={handlePreviousWeek}
-          handleNextWeek={handleNextWeek}
-          startOfWeekFormatted={startOfWeekFormatted}
-          endOfWeekFormatted={endOfWeekFormatted}
-        />
-      )}
+      <WeeklyRecordFilterSection
+        handlePrint={handlePrint}
+        handlePreviousWeek={handlePreviousWeek}
+        handleNextWeek={handleNextWeek}
+        startOfWeekFormatted={startOfWeekFormatted}
+        endOfWeekFormatted={endOfWeekFormatted}
+      />
+
       {!records.length && <NoResultFound />}
       {records.length > 0 && (
         <>
-          <WeeeklyRecordFilterSection
-            handlePrint={handlePrint}
-            handlePreviousWeek={handlePreviousWeek}
-            handleNextWeek={handleNextWeek}
-            startOfWeekFormatted={startOfWeekFormatted}
-            endOfWeekFormatted={endOfWeekFormatted}
-          />
           <div className="h-[550px] overflow-auto">
             <Table>
               <TableHeader className="sticky top-0 z-50 bg-ccdi-blue">
@@ -177,7 +168,7 @@ type WeeklyRcordFilterProps = {
   endOfWeekFormatted: string;
 };
 
-function WeeeklyRecordFilterSection({
+function WeeklyRecordFilterSection({
   handlePrint,
   handlePreviousWeek,
   handleNextWeek,

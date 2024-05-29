@@ -22,7 +22,6 @@ export type TAttendanceContext = {
   startOfWeek: Moment;
   endOfWeek: Moment;
   records: TRecord[];
-  isFiltering: boolean;
   handleMarkAs: (studentId: string, type: Status) => Promise<void>;
   handleUpdateAs: (
     studentId: string,

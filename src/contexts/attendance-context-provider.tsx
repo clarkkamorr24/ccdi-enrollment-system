@@ -37,13 +37,11 @@ export default function AttendanceContextProvider({
   const todayDate = getTodayDate();
   const [selectedStrands, setSelectedStrands] = useState<string[]>([]);
   const [selectedSemesters, setSelectedSemesters] = useState<string[]>([]);
-  const [isFiltering, setIsFiltering] = useState(false);
 
   const handleFilterAttendance = useCallback(
     (strands: string[], semesters: string[]) => {
       setSelectedStrands(strands);
       setSelectedSemesters(semesters);
-      setIsFiltering(true);
     },
     []
   );
@@ -122,7 +120,6 @@ export default function AttendanceContextProvider({
         handleCurrentWeek,
         startOfWeek,
         endOfWeek,
-        isFiltering,
       }}
     >
       {children}
