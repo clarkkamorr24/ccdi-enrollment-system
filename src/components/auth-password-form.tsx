@@ -20,10 +20,10 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
   const router = useRouter();
   const [forgotPasswordMessage, dispatchForgotPassword] = useFormState(
     forgotPassword,
-    undefined
+    undefined,
   );
   const [resetPasswordError, setResetPasswordError] = useState<string | null>(
-    null
+    null,
   );
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
 
@@ -45,25 +45,25 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
       }
     >
       {forgotPasswordMessage?.message && (
-        <p className="text-red-500 font-semibold text-center text-xs">
+        <p className="text-center text-xs font-semibold text-red-500">
           {forgotPasswordMessage.message}
         </p>
       )}
 
       {forgotPasswordMessage?.success && (
-        <p className="text-green-500 font-semibold text-center text-xs">
+        <p className="text-center text-xs font-semibold text-green-500">
           {forgotPasswordMessage.success}
         </p>
       )}
 
       {resetPasswordError && (
-        <p className="text-red-500 font-semibold text-center text-xs">
+        <p className="text-center text-xs font-semibold text-red-500">
           {resetPasswordError}
         </p>
       )}
 
       {type === "forgot" && (
-        <div className="space-y-1 mt-5">
+        <div className="mt-5 space-y-1">
           <Label htmlFor="email">Please enter your email</Label>
           <Input id="email" type="email" name="email" required maxLength={50} />
         </div>
@@ -71,7 +71,7 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
 
       {type === "reset" && (
         <>
-          <div className="space-y-1 mt-2">
+          <div className="mt-2 space-y-1">
             <Label htmlFor="password">New Password</Label>
             <Input
               id="password"
@@ -83,14 +83,14 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
             />
             <span onClick={() => setIsPasswordOpen(!isPasswordOpen)}>
               {isPasswordOpen && (
-                <EyeOpenIcon className="absolute right-3 bottom-2 h-5 w-5 cursor-pointer" />
+                <EyeOpenIcon className="absolute bottom-2 right-3 h-5 w-5 cursor-pointer" />
               )}
               {!isPasswordOpen && (
-                <EyeClosedIcon className="absolute right-3 bottom-2 h-5 w-5 cursor-pointer" />
+                <EyeClosedIcon className="absolute bottom-2 right-3 h-5 w-5 cursor-pointer" />
               )}
             </span>
           </div>
-          <div className="space-y-1 mt-2">
+          <div className="mt-2 space-y-1">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input
               id="confirmPassword"
@@ -103,7 +103,7 @@ export default function AuthPasswordForm({ type, id }: AuthPasswordFormProps) {
         </>
       )}
       {type === "reset" && (
-        <div className="flex justify-items-center items-center gap-x-2 mt-2">
+        <div className="mt-2 flex items-center justify-items-center gap-x-2">
           <p>Show password</p>
           <Checkbox
             checked={isPasswordOpen}

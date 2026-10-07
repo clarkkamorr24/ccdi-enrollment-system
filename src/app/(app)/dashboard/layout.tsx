@@ -17,14 +17,17 @@ export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
   const session = await checkAuth();
-  const records = await getAttendanceRecord(session.user.id);
-  const subjects = await getSubjects(session.user.id);
-  const students = await getStudents(session.user.id);
+
+  const [ records, subjects, students] = await Promise.all([
+    await getAttendanceRecord(session.user.id),
+    await getSubjects(session.user.id),
+    await getStudents(session.user.id),
+  ]);
 
   return (
-    <main className="grid md:grid-cols-4 md:grid-rows-1 md:h-[700px]">
-      <div className="md:col-span-1 md:col-start-1 border-r border-gray-500/10">
-        <div className="md:w-full md:h-full p-2">
+    <main className="grid md:h-[700px] md:grid-cols-4 md:grid-rows-1">
+      <div className="border-r border-gray-500/10 md:col-span-1 md:col-start-1">
+        <div className="p-2 md:h-full md:w-full">
           <SideItemsList />
         </div>
       </div>
