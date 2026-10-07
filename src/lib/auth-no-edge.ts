@@ -1,9 +1,9 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { nextAuthEdgeConfig } from "./auth-edge";
 import { loginSchema } from "./validation";
 import { getUserByEmail } from "./server-utils";
-import { nextAuthEdgeConfig } from "./auth-edge";
 
 const config = {
   ...nextAuthEdgeConfig,

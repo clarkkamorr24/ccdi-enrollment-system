@@ -27,7 +27,7 @@ export default function AttendanceTable() {
       {students.length > 0 && (
         <div className="h-[600px] overflow-auto">
           <Table>
-            <TableHeader className="sticky top-0 z-50 bg-ccdi-blue ">
+            <TableHeader className="sticky top-0 z-50 bg-ccdi-blue">
               <TableRow className="hover:bg-ccdi-blue">
                 <TableHead className="w-[150px] font-bold text-white">
                   Student ID
@@ -38,7 +38,7 @@ export default function AttendanceTable() {
                 <TableHead className="w-[150px] font-bold text-white">
                   Strand/Semester
                 </TableHead>
-                <TableHead className="font-bold text-white pl-5">
+                <TableHead className="pl-5 font-bold text-white">
                   Marked as
                 </TableHead>
               </TableRow>
@@ -53,12 +53,12 @@ export default function AttendanceTable() {
                     <span className="capitalize">{student.middleName}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="uppercase flex gap-x-2">
+                    <span className="flex gap-x-2 uppercase">
                       <p className="w-[40px]">{student.strand}</p>-
                       <p>{student.semester === "first" ? "1st" : "2nd"}</p>
                     </span>
                   </TableCell>
-                  <TableCell className="flex gap-x-2 justify-between">
+                  <TableCell className="flex justify-between gap-x-2">
                     <div className="flex">
                       {/* present */}
                       <ComponentTooltip type="present">
