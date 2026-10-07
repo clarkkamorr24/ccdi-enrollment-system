@@ -40,8 +40,8 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
       <span className="text-xs">Select strand to filter</span>
       {strands.map((strand) => {
         return (
-          <div className="space-y-3 my-2" key={strand.id}>
-            <div className="flex justify-between px-2 items-center">
+          <div className="my-2 space-y-3" key={strand.id}>
+            <div className="flex items-center justify-between px-2">
               <label
                 htmlFor="strand"
                 className="text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -80,14 +80,14 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
                 )}
               />
             </div>
-            <div className="h-px w-full bg-ccdi-blue/10" />
+            <div className="w-full h-px bg-ccdi-blue/10" />
           </div>
         );
       })}
       <span className="text-xs">Select semester to filter</span>
       {semesters.map((semester) => {
         return (
-          <div className="space-y-3 my-2" key={semester.id}>
+          <div className="my-2 space-y-3" key={semester.id}>
             <div className="flex justify-between px-2">
               <label
                 htmlFor="semester"
@@ -127,7 +127,7 @@ export default function FilterForm({ onFormSubmission }: FilterFormProps) {
                 )}
               />
             </div>
-            <div className="h-px w-full bg-ccdi-blue/10" />
+            <div className="w-full h-px bg-ccdi-blue/10" />
           </div>
         );
       })}

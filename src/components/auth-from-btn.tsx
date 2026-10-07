@@ -13,7 +13,7 @@ export default function AuthFormBtn({ type }: AuthFormtnProps) {
     <Button
       size="icon"
       disabled={pending}
-      className="w-full mt-5 bg-ccdi-blue disabled:bg-ccdi-blue"
+      className="mt-5 w-full bg-ccdi-blue disabled:bg-ccdi-blue"
     >
       {type === "register" && (pending ? "Signing up..." : "Register")}
       {type === "login" &&

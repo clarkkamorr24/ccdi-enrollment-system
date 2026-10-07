@@ -18,27 +18,28 @@ export default function AuthForm({ type }: AuthFormProps) {
   const [logInError, dispatchLogIn] = useFormState(logIn, undefined);
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log("type", type);
   return (
     <form
       action={type === "register" ? dispatchRegister : dispatchLogIn}
       className="text-sm"
     >
       {logInError && (
-        <p className="text-red-500 font-semibold text-center">
+        <p className="text-center font-semibold text-red-500">
           {" "}
           {logInError.message}
         </p>
       )}
 
       {registerError && (
-        <p className="text-red-500 font-semibold text-center">
+        <p className="text-center font-semibold text-red-500">
           {" "}
           {registerError.message}
         </p>
       )}
       {type === "register" && (
         <>
-          <div className="space-y-1 mt-5">
+          <div className="mt-5 space-y-1">
             <Label htmlFor="firstName">First Name</Label>
             <Input
               id="firstName"
@@ -48,11 +49,11 @@ export default function AuthForm({ type }: AuthFormProps) {
               maxLength={50}
             />
           </div>
-          <div className="space-y-1 mt-2">
+          <div className="mt-2 space-y-1">
             <Label htmlFor="middleName">Middle Name (optional)</Label>
             <Input id="middleName" type="text" name="middleName" />
           </div>
-          <div className="space-y-1 mt-2">
+          <div className="mt-2 space-y-1">
             <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
@@ -65,12 +66,12 @@ export default function AuthForm({ type }: AuthFormProps) {
         </>
       )}
 
-      <div className="space-y-1 mt-2">
+      <div className="mt-2 space-y-1">
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" name="email" required maxLength={100} />
       </div>
 
-      <div className="space-y-1 mt-2 relative">
+      <div className="relative mt-2 space-y-1">
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
@@ -82,10 +83,10 @@ export default function AuthForm({ type }: AuthFormProps) {
         />
         <span onClick={() => setIsOpen(!isOpen)}>
           {isOpen && (
-            <EyeOpenIcon className="absolute right-3 bottom-2 h-5 w-5 cursor-pointer" />
+            <EyeOpenIcon className="absolute bottom-2 right-3 h-5 w-5 cursor-pointer" />
           )}
           {!isOpen && (
-            <EyeClosedIcon className="absolute right-3 bottom-2 h-5 w-5 cursor-pointer" />
+            <EyeClosedIcon className="absolute bottom-2 right-3 h-5 w-5 cursor-pointer" />
           )}
         </span>
       </div>
@@ -93,7 +94,7 @@ export default function AuthForm({ type }: AuthFormProps) {
       {type === "login" && (
         <Link
           href="/forgot-password"
-          className="float-right mt-4 text-ccdi-blue cursor-pointer"
+          className="float-right mt-4 cursor-pointer text-ccdi-blue"
         >
           Forgot your password?
         </Link>
